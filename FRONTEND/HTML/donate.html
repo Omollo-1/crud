@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Make a Donation - Chartitze</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
+</head>
+
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Make a Donation</h1>
+                <p>Your support transforms lives and builds brighter futures</p>
+            </div>
+
+            <div class="donate-container">
+                <div class="donate-form-container">
+                    <h2>Donation Form</h2>
+                    <form id="donationForm" class="donation-form">
+                        <!-- Amount Selection -->
+                        <div class="form-group">
+                            <label for="donationAmount">Donation Amount (USD)</label>
+                            <div class="amount-options">
+                                <button type="button" class="amount-option" data-amount="25">$25</button>
+                                <button type="button" class="amount-option" data-amount="50">$50</button>
+                                <button type="button" class="amount-option" data-amount="100">$100</button>
+                                <button type="button" class="amount-option" data-amount="250">$250</button>
+                                <button type="button" class="amount-option" data-amount="500">$500</button>
+                            </div>
+                            <div class="custom-amount">
+                                <label for="customAmount">Or enter custom amount:</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-dollar-sign"></i>
+                                    <input type="number" id="customAmount" name="customAmount" min="1"
+                                        placeholder="Enter amount">
+                                </div>
+                            </div>
+                            <input type="hidden" id="donationAmount" name="donationAmount" value="25">
+                        </div>
+
+                        <!-- Donor Details -->
+                        <div class="form-group">
+                            <label for="fullName">Full Name *</label>
+                            <input type="text" id="fullName" name="fullName" required>
+                            <div class="error-message" id="nameError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required>
+                            <div class="error-message" id="emailError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="form-group">
+                            <label>Payment Method *</label>
+                            <div class="payment-options">
+                                <div class="payment-option">
+                                    <input type="radio" id="creditCard" name="paymentMethod" value="creditCard" checked>
+                                    <label for="creditCard">
+                                        <i class="fas fa-credit-card"></i> Credit Card
+                                    </label>
+                                </div>
+                                <div class="payment-option">
+                                    <input type="radio" id="paypal" name="paymentMethod" value="paypal">
+                                    <label for="paypal">
+                                        <i class="fab fa-paypal"></i> PayPal
+                                    </label>
+                                </div>
+                                <div class="payment-option">
+                                    <input type="radio" id="bankTransfer" name="paymentMethod" value="bankTransfer">
+                                    <label for="bankTransfer">
+                                        <i class="fas fa-university"></i> Bank Transfer
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Credit Card Details -->
+                        <div id="creditCardDetails" class="payment-details">
+                            <div class="form-group">
+                                <label for="cardNumber">Card Number *</label>
+                                <input type="text" id="cardNumber" name="cardNumber" placeholder="1234 5678 9012 3456"
+                                    maxlength="19">
+                                <div class="error-message" id="cardError"></div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="expiryDate">Expiry Date *</label>
+                                    <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY"
+                                        maxlength="5">
+                                </div>
+                                <div class="form-group">
+                                    <label for="cvv">CVV *</label>
+                                    <input type="text" id="cvv" name="cvv" placeholder="123" maxlength="4">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PayPal Details -->
+                        <div id="paypalDetails" class="payment-details hidden">
+                            <p>You will be redirected to PayPal to complete your donation after submitting this form.
+                            </p>
+                        </div>
+
+                        <!-- Bank Transfer Details -->
+                        <div id="bankTransferDetails" class="payment-details hidden">
+                            <p>Please use the following bank details for your transfer:</p>
+                            <ul class="bank-details">
+                                <li><strong>Bank:</strong> Global Charity Bank</li>
+                                <li><strong>Account Name:</strong> Chartitze Foundation</li>
+                                <li><strong>Account Number:</strong> 1234567890</li>
+                                <li><strong>Routing Number:</strong> 021000021</li>
+                                <li><strong>SWIFT Code:</strong> GLCHUS33</li>
+                            </ul>
+                            <p>Please include your name as a reference.</p>
+                        </div>
+
+                        <!-- Donation Type -->
+                        <div class="form-group">
+                            <label for="donationType">Donation Type</label>
+                            <select id="donationType" name="donationType">
+                                <option value="one-time">One-time Donation</option>
+                                <option value="monthly">Monthly Donation</option>
+                                <option value="quarterly">Quarterly Donation</option>
+                                <option value="yearly">Yearly Donation</option>
+                            </select>
+                        </div>
+
+                        <!-- Dedication -->
+                        <div class="form-group">
+                            <label for="dedication">Dedication (Optional)</label>
+                            <textarea id="dedication" name="dedication" placeholder="In honor/memory of someone special"
+                                rows="3"></textarea>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-large btn-block">Donate Now</button>
+                        </div>
+
+                        <!-- Security Note -->
+                        <div class="security-note">
+                            <i class="fas fa-lock"></i>
+                            <span>Your donation is secure and encrypted. All information is kept confidential.</span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="donate-info">
+                    <h3>How Your Donation Helps</h3>
+                    <div class="impact-list">
+                        <div class="impact-item">
+                            <i class="fas fa-utensils"></i>
+                            <div>
+                                <h4>$25</h4>
+                                <p>Provides nutritious meals for a child for one week</p>
+                            </div>
+                        </div>
+                        <div class="impact-item">
+                            <i class="fas fa-book"></i>
+                            <div>
+                                <h4>$50</h4>
+                                <p>Buys school supplies and textbooks for one child</p>
+                            </div>
+                        </div>
+                        <div class="impact-item">
+                            <i class="fas fa-stethoscope"></i>
+                            <div>
+                                <h4>$100</h4>
+                                <p>Covers medical checkups for five children</p>
+                            </div>
+                        </div>
+                        <div class="impact-item">
+                            <i class="fas fa-home"></i>
+                            <div>
+                                <h4>$250</h4>
+                                <p>Supports housing costs for a child for one month</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testimonial">
+                        <div class="testimonial-content">
+                            <i class="fas fa-quote-left"></i>
+                            <p>Thanks to donors like you, I now have a safe home and am studying to become a doctor.
+                                You've given me hope for the future.</p>
+                            <div class="testimonial-author">
+                                <strong>Grace</strong>
+                                <span>Age 10, supported since 2018</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="other-ways">
+                        <h4>Other Ways to Support</h4>
+                        <ul>
+                            <li><a href="volunteer.html"><i class="fas fa-hands-helping"></i> Volunteer your time</a>
+                            </li>
+                            <li><a href="#"><i class="fas fa-gift"></i> Sponsor a child</a></li>
+                            <li><a href="#"><i class="fas fa-briefcase"></i> Corporate partnership</a></li>
+                            <li><a href="#"><i class="fas fa-hand-holding-usd"></i> Monthly giving program</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Thank You!</h3>
+            <p id="confirmationMessage">Your submission has been received successfully.</p>
+            <button class="btn btn-primary close-confirmation">OK</button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Processing your request...</p>
+    </div>
+
+    <script>
+        // Load header and footer
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load header
+            fetch('../Components/header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                    // Initialize navigation after loading
+                    const navScript = document.createElement('script');
+                    navScript.src = '../Components/navigation.js';
+                    document.body.appendChild(navScript);
+                });
+
+            // Load footer
+            fetch('../Components/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                });
+        });
+    </script>
+    <script src="../Js/script.js"></script>
+</body>
+
+</html>

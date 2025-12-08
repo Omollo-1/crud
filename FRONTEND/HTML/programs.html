@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Programs - Chartitze</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
+</head>
+
+<body>
+    <div id="header-container"></div>
+
+    <main class="main-content" id="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Our Programs</h1>
+                <p>Comprehensive support for every child's needs</p>
+            </div>
+
+            <div class="programs-grid">
+                <!-- Education Program -->
+                <div class="program-card">
+                    <div class="program-image">
+                        <img src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Education Program">
+                    </div>
+                    <div class="program-content">
+                        <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                        <p>We provide quality education through our on-site school, tutoring programs, and scholarships
+                            for higher education. Our curriculum focuses on academic excellence and life skills.</p>
+                        <ul class="program-features">
+                            <li>Primary and secondary education</li>
+                            <li>Computer literacy classes</li>
+                            <li>Vocational training programs</li>
+                            <li>University scholarships</li>
+                        </ul>
+                        <button class="btn btn-primary support-btn" data-program="education">Support This
+                            Program</button>
+                    </div>
+                </div>
+
+                <!-- Healthcare Program -->
+                <div class="program-card">
+                    <div class="program-image">
+                        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Healthcare Program">
+                    </div>
+                    <div class="program-content">
+                        <h3><i class="fas fa-heartbeat"></i> Healthcare</h3>
+                        <p>Regular health checkups, nutritional support, mental health counseling, and access to medical
+                            care ensure our children grow up healthy and strong.</p>
+                        <ul class="program-features">
+                            <li>Regular medical checkups</li>
+                            <li>Nutritional meals program</li>
+                            <li>Mental health counseling</li>
+                            <li>Dental and vision care</li>
+                        </ul>
+                        <button class="btn btn-primary support-btn" data-program="healthcare">Support This
+                            Program</button>
+                    </div>
+                </div>
+
+                <!-- Mentorship Program -->
+                <div class="program-card">
+                    <div class="program-image">
+                        <img src="https://images.unsplash.com/photo-1543269865-cbf427effbad?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Mentorship Program">
+                    </div>
+                    <div class="program-content">
+                        <h3><i class="fas fa-hands-helping"></i> Mentorship</h3>
+                        <p>Our mentorship program connects children with caring adults who provide guidance, emotional
+                            support, and positive role modeling for personal development.</p>
+                        <ul class="program-features">
+                            <li>One-on-one mentorship</li>
+                            <li>Career guidance</li>
+                            <li>Life skills workshops</li>
+                            <li>Emotional support groups</li>
+                        </ul>
+                        <button class="btn btn-primary support-btn" data-program="mentorship">Support This
+                            Program</button>
+                    </div>
+                </div>
+
+                <!-- Nutrition Program -->
+                <div class="program-card">
+                    <div class="program-image">
+                        <img src="https://images.unsplash.com/photo-1516627145497-ae6a8c6d6e3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                            alt="Nutrition Program">
+                    </div>
+                    <div class="program-content">
+                        <h3><i class="fas fa-utensils"></i> Nutrition</h3>
+                        <p>We provide balanced, nutritious meals daily and educate children about healthy eating habits
+                            to support their physical and cognitive development.</p>
+                        <ul class="program-features">
+                            <li>Three balanced meals daily</li>
+                            <li>Nutrition education</li>
+                            <li>Our own vegetable garden</li>
+                            <li>Supplemental feeding program</li>
+                        </ul>
+                        <button class="btn btn-primary support-btn" data-program="nutrition">Support This
+                            Program</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Support Modal -->
+    <div id="supportModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Support Our <span id="programName">Program</span></h3>
+            <p>Your contribution will help us continue this vital program. Choose how you'd like to help:</p>
+            <div class="support-options">
+                <div class="support-option">
+                    <i class="fas fa-donate"></i>
+                    <h4>Make a Donation</h4>
+                    <p>One-time or monthly donations directly support this program.</p>
+                    <a href="donate.html" class="btn btn-primary">Donate Now</a>
+                </div>
+                <div class="support-option">
+                    <i class="fas fa-hands-helping"></i>
+                    <h4>Volunteer</h4>
+                    <p>Share your time and skills to make a direct impact.</p>
+                    <a href="volunteer.html" class="btn btn-secondary">Volunteer</a>
+                </div>
+                <div class="support-option">
+                    <i class="fas fa-gift"></i>
+                    <h4>Sponsor a Child</h4>
+                    <p>Provide ongoing support for a child in this program.</p>
+                    <a href="donate.html" class="btn btn-secondary">Sponsor</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadComponent('header-container', '../Components/header.html');
+            loadComponent('footer-container', '../Components/footer.html');
+
+            setTimeout(setActiveNavLink, 100);
+            setTimeout(initProgramsPage, 200);
+        });
+
+        function loadComponent(containerId, filePath) {
+            fetch(filePath)
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById(containerId).innerHTML = data;
+                })
+                .catch(error => console.error('Error loading component:', error));
+        }
+
+        function setActiveNavLink() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === 'programs.html') {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+
+        function initProgramsPage() {
+            // Program support buttons
+            const supportBtns = document.querySelectorAll('.support-btn');
+            supportBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const program = btn.getAttribute('data-program');
+                    document.getElementById('programName').textContent =
+                        program.charAt(0).toUpperCase() + program.slice(1);
+                    document.getElementById('supportModal').style.display = 'flex';
+                });
+            });
+
+            // Close modal when clicking X
+            document.querySelector('.close-modal')?.addEventListener('click', () => {
+                document.getElementById('supportModal').style.display = 'none';
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', (e) => {
+                if (e.target === document.getElementById('supportModal')) {
+                    document.getElementById('supportModal').style.display = 'none';
+                }
+            });
+        }
+    </script>
+    <script src="../Components/navigation.js"></script>
+    <script src="../Js/script.js"></script>
+</body>
+
+</html>

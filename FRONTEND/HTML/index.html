@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chartitze - Loving Home for Orphaned Children</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
+</head>
+
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Loving Home for Orphaned Children</h1>
+                    <p class="hero-text">Providing orphaned children with love, shelter, education, and hope for a
+                        brighter future since 2010.</p>
+                    <div class="hero-buttons">
+                        <a href="donate.html" class="btn btn-primary btn-large">Donate Now</a>
+                        <a href="volunteer.html" class="btn btn-secondary btn-large">Volunteer</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="container">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="1500">0</div>
+                        <div class="stat-label">Children Helped</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="12">0</div>
+                        <div class="stat-label">Years of Service</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="98">0</div>
+                        <div class="stat-label">Success Rate</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="45">0</div>
+                        <div class="stat-label">Active Volunteers</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission Statement -->
+        <section class="mission-section">
+            <div class="container">
+                <div class="mission-content">
+                    <h2>Our Mission</h2>
+                    <p>Chartitze is dedicated to transforming the lives of orphaned children by providing them with a
+                        loving home, quality education, healthcare, and the emotional support they need to thrive. We
+                        believe every child deserves a chance at a bright future.</p>
+                    <blockquote>
+                        "You can transform lives and build a better world, one child at a time."
+                    </blockquote>
+                </div>
+            </div>
+        </section>
+
+        <!-- Image Carousel -->
+        <section class="carousel-section">
+            <div class="container">
+                <h2 class="section-title">Our Children & Activities</h2>
+                <div class="carousel" id="carousel">
+                    <div class="carousel-track">
+                        <div class="carousel-slide active">
+                            <img src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
+                                alt="Children playing">
+                            <div class="carousel-caption">Children enjoying playtime</div>
+                        </div>
+                        <div class="carousel-slide">
+                            <img src="FRONTEND/images/IMG-20251115-WA0008.jpg"
+                                alt="Children studying">
+                            <div class="carousel-caption">Education is key to their future</div>
+                        </div>
+                       
+                        <div class="carousel-slide">
+                            <img src="FRONTEND/images/20241213_122448.jpg"
+                                alt="Children with volunteers">
+                            <div class="carousel-caption">Volunteers making a difference</div>
+                        </div>
+                    </div>
+                    <button class="carousel-btn prev-btn" aria-label="Previous slide">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-btn next-btn" aria-label="Next slide">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="carousel-indicators">
+                        <span class="indicator active" data-slide="0"></span>
+                        <span class="indicator" data-slide="1"></span>
+                        <span class="indicator" data-slide="2"></span>
+                        <span class="indicator" data-slide="3"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Support Modal -->
+    <div id="supportModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3>Support Our <span id="programName">Program</span></h3>
+            <p>Your contribution will help us continue this vital program. Choose how you'd like to help:</p>
+            <div class="support-options">
+                <div class="support-option">
+                    <i class="fas fa-donate"></i>
+                    <h4>Make a Donation</h4>
+                    <p>One-time or monthly donations directly support this program.</p>
+                    <a href="donate.html" class="btn btn-primary">Donate Now</a>
+                </div>
+                <div class="support-option">
+                    <i class="fas fa-hands-helping"></i>
+                    <h4>Volunteer</h4>
+                    <p>Share your time and skills to make a direct impact.</p>
+                    <a href="volunteer.html" class="btn btn-secondary">Volunteer</a>
+                </div>
+                <div class="support-option">
+                    <i class="fas fa-gift"></i>
+                    <h4>Sponsor a Child</h4>
+                    <p>Provide ongoing support for a child in this program.</p>
+                    <a href="donate.html" class="btn btn-secondary">Sponsor</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Thank You!</h3>
+            <p id="confirmationMessage">Your submission has been received successfully.</p>
+            <button class="btn btn-primary close-confirmation">OK</button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Processing your request...</p>
+    </div>
+
+    <script>
+        // Load header and footer
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load header
+            fetch('../Components/header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                    // Initialize navigation after loading
+                    const navScript = document.createElement('script');
+                    navScript.src = '../Components/navigation.js';
+                    document.body.appendChild(navScript);
+                });
+
+            // Load footer
+            fetch('../Components/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                });
+        });
+    </script>
+    <script src="../Js/script.js"></script>
+</body>
+
+</html>

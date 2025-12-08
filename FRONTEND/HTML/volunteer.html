@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Volunteer - Chartitze</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
+</head>
+
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Become a Volunteer</h1>
+                <p>Join our community of compassionate volunteers making a difference</p>
+            </div>
+
+            <div class="volunteer-container">
+                <div class="volunteer-info">
+                    <h2>Why Volunteer With Us?</h2>
+                    <p>Our volunteers are the heart of Chartitze. By sharing your time and skills, you directly impact
+                        the lives of orphaned children and help create lasting change.</p>
+
+                    <div class="benefits">
+                        <h3>Benefits of Volunteering</h3>
+                        <ul>
+                            <li><i class="fas fa-check-circle"></i> Make a tangible difference in children's lives</li>
+                            <li><i class="fas fa-check-circle"></i> Gain valuable experience in child welfare</li>
+                            <li><i class="fas fa-check-circle"></i> Join a supportive community</li>
+                            <li><i class="fas fa-check-circle"></i> Flexible scheduling options</li>
+                            <li><i class="fas fa-check-circle"></i> Training and ongoing support</li>
+                        </ul>
+                    </div>
+
+                    <div class="volunteer-roles">
+                        <h3>Volunteer Roles Available</h3>
+                        <div class="roles-grid">
+                            <div class="role-card">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                                <h4>Tutoring & Teaching</h4>
+                                <p>Help children with homework and educational activities</p>
+                            </div>
+                            <div class="role-card">
+                                <i class="fas fa-utensils"></i>
+                                <h4>Meal Preparation</h4>
+                                <p>Assist with cooking and serving nutritious meals</p>
+                            </div>
+                            <div class="role-card">
+                                <i class="fas fa-gamepad"></i>
+                                <h4>Recreational Activities</h4>
+                                <p>Organize games, sports, and creative activities</p>
+                            </div>
+                            <div class="role-card">
+                                <i class="fas fa-hands"></i>
+                                <h4>Mentoring</h4>
+                                <p>Provide guidance and emotional support to children</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="volunteer-form-container">
+                    <h2>Volunteer Application</h2>
+                    <form id="volunteerForm" class="volunteer-form">
+                        <div class="form-group">
+                            <label for="volunteerName">Full Name *</label>
+                            <input type="text" id="volunteerName" name="volunteerName" required>
+                            <div class="error-message" id="volunteerNameError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="volunteerEmail">Email Address *</label>
+                            <input type="email" id="volunteerEmail" name="volunteerEmail" required>
+                            <div class="error-message" id="volunteerEmailError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="volunteerPhone">Phone Number *</label>
+                            <input type="tel" id="volunteerPhone" name="volunteerPhone" required>
+                            <div class="error-message" id="volunteerPhoneError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="volunteerAge">Age *</label>
+                            <input type="number" id="volunteerAge" name="volunteerAge" min="18" required>
+                            <div class="error-message" id="volunteerAgeError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="volunteerOccupation">Occupation</label>
+                            <input type="text" id="volunteerOccupation" name="volunteerOccupation">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="volunteerSkills">Skills & Experience *</label>
+                            <textarea id="volunteerSkills" name="volunteerSkills" rows="4" required
+                                placeholder="Please describe your relevant skills, experience, or qualifications"></textarea>
+                            <div class="error-message" id="volunteerSkillsError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="volunteerInterests">Volunteer Interests *</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="interestTutoring" name="volunteerInterests"
+                                        value="tutoring">
+                                    <label for="interestTutoring">Tutoring/Teaching</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="interestMentoring" name="volunteerInterests"
+                                        value="mentoring">
+                                    <label for="interestMentoring">Mentoring</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="interestActivities" name="volunteerInterests"
+                                        value="activities">
+                                    <label for="interestActivities">Recreational Activities</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="interestMeals" name="volunteerInterests" value="meals">
+                                    <label for="interestMeals">Meal Preparation</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="interestAdmin" name="volunteerInterests" value="admin">
+                                    <label for="interestAdmin">Administrative Support</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="interestFundraising" name="volunteerInterests"
+                                        value="fundraising">
+                                    <label for="interestFundraising">Fundraising</label>
+                                </div>
+                            </div>
+                            <div class="error-message" id="volunteerInterestsError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="volunteerAvailability">Availability *</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="availabilityWeekdays" name="volunteerAvailability"
+                                        value="weekdays">
+                                    <label for="availabilityWeekdays">Weekdays</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="availabilityWeekends" name="volunteerAvailability"
+                                        value="weekends">
+                                    <label for="availabilityWeekends">Weekends</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="availabilityMornings" name="volunteerAvailability"
+                                        value="mornings">
+                                    <label for="availabilityMornings">Mornings</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="availabilityAfternoons" name="volunteerAvailability"
+                                        value="afternoons">
+                                    <label for="availabilityAfternoons">Afternoons</label>
+                                </div>
+                                <div class="checkbox-option">
+                                    <input type="checkbox" id="availabilityEvenings" name="volunteerAvailability"
+                                        value="evenings">
+                                    <label for="availabilityEvenings">Evenings</label>
+                                </div>
+                            </div>
+                            <div class="error-message" id="volunteerAvailabilityError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="volunteerCommitment">Time Commitment *</label>
+                            <select id="volunteerCommitment" name="volunteerCommitment" required>
+                                <option value="">Select commitment level</option>
+                                <option value="occasional">Occasional (when available)</option>
+                                <option value="weekly">Weekly (2-4 hours per week)</option>
+                                <option value="regular">Regular (5+ hours per week)</option>
+                                <option value="full-time">Full-time (seasonal/internship)</option>
+                            </select>
+                            <div class="error-message" id="volunteerCommitmentError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="volunteerStartDate">Preferred Start Date *</label>
+                            <input type="date" id="volunteerStartDate" name="volunteerStartDate" required>
+                            <div class="error-message" id="volunteerStartDateError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="volunteerMotivation">Why do you want to volunteer with us? *</label>
+                            <textarea id="volunteerMotivation" name="volunteerMotivation" rows="4" required
+                                placeholder="Please share your motivation for volunteering"></textarea>
+                            <div class="error-message" id="volunteerMotivationError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox-option">
+                                <input type="checkbox" id="volunteerAgreement" name="volunteerAgreement" required>
+                                <label for="volunteerAgreement">I agree to undergo a background check as required for
+                                    working with children *</label>
+                            </div>
+                            <div class="error-message" id="volunteerAgreementError"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-large btn-block">Submit
+                                Application</button>
+                        </div>
+
+                        <div class="form-note">
+                            <p><small>After submitting your application, our volunteer coordinator will contact you
+                                    within 3-5 business days to discuss next steps.</small></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Thank You!</h3>
+            <p id="confirmationMessage">Your submission has been received successfully.</p>
+            <button class="btn btn-primary close-confirmation">OK</button>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Processing your request...</p>
+    </div>
+
+    <script>
+        // Load header and footer
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load header
+            fetch('../Components/header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                    // Initialize navigation after loading
+                    const navScript = document.createElement('script');
+                    navScript.src = '../Components/navigation.js';
+                    document.body.appendChild(navScript);
+                });
+
+            // Load footer
+            fetch('../Components/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                });
+        });
+    </script>
+    <script src="../Js/script.js"></script>
+</body>
+
+</html>

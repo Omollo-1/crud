@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery - Chartitze</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
+</head>
+
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content" id="gallery">
+        <div class="container">
+            <div class="page-header">
+                <h1>Our Gallery</h1>
+                <p>Moments of joy, learning, and growth at Chartitze</p>
+            </div>
+
+            <!-- Gallery Filters -->
+            <div class="gallery-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="children">Our Children</button>
+                <button class="filter-btn" data-filter="activities">Activities</button>
+                <button class="filter-btn" data-filter="education">Education</button>
+                <button class="filter-btn" data-filter="events">Special Events</button>
+            </div>
+
+            <!-- Gallery Grid -->
+            <div class="gallery-grid">
+                <!-- Children Category -->
+                <div class="gallery-item" data-category="children">
+                    <div class="gallery-image">
+                        <img src="FRONTEND/images/IMG-20251115-WA0007.jpg"
+                            alt="David, Age 8">
+                        <div class="gallery-overlay">
+                            <h3>David</h3>
+                            <p>Age 8 - Loves soccer and math</p>
+                            <button class="view-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="children">
+                    <div class="gallery-image">
+                        <img src="FRONTEND/images/IMG-20251115-WA0008.jpg"
+                            alt="Grace, Age 10">
+                        <div class="gallery-overlay">
+                            <h3>Grace</h3>
+                            <p>Age 10 - Dreams of becoming a doctor</p>
+                            <button class="view-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="children">
+                    <div class="gallery-image">
+                        <img src="FRONTEND/images/IMG-20251115-WA0009.jpg"
+                            alt="Samuel, Age 7">
+                        <div class="gallery-overlay">
+                            <h3>Samuel</h3>
+                            <p>Age 7 - Enjoys drawing and storytelling</p>
+                            <button class="view-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activities Category -->
+                <div class="gallery-item" data-category="activities">
+                    <div class="gallery-image">
+                        <img src="FRONTEND/images/IMG-20251115-WA0010.jpg"
+                            alt="Playtime">
+                        <div class="gallery-overlay">
+                            <h3>Playtime Fun</h3>
+                            <p>Children enjoying outdoor activities</p>
+                            <button class="view-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="activities">
+                    <div class="gallery-image">
+                        <img src="FRONTEND/images/WhatsApp Image 2025-12-03 at 16.58.39_7abac659.jpg"
+                            alt="Art class">
+                        <div class="gallery-overlay">
+                            <h3>Art Class</h3>
+                            <p>Creative expression through painting</p>
+                            <button class="view-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Education Category -->
+                <div class="gallery-item" data-category="education">
+                    <div class="gallery-image">
+                        <img src="FRONTEND/images/IMG-20251115-WA0014.jpg"
+                            alt="Classroom learning">
+                        <div class="gallery-overlay">
+                            <h3>Classroom Learning</h3>
+                            <p>Interactive lessons with our teachers</p>
+                            <button class="view-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="education">
+                    <div class="gallery-image">
+                        <img src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+                            alt="Computer class">
+                        <div class="gallery-overlay">
+                            <h3>Computer Class</h3>
+                            <p>Learning digital skills for the future</p>
+                            <button class="view-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Events Category -->
+                <div class="gallery-item" data-category="events">
+                    <div class="gallery-image">
+                        <img src="FRONTEND/images/IMG-20251115-WA0013.jpg"
+                            alt="Birthday celebration">
+                        <div class="gallery-overlay">
+                            <h3>Birthday Celebration</h3>
+                            <p>Monthly birthday parties for our children</p>
+                            <button class="view-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item" data-category="events">
+                    <div class="gallery-image">
+                        <img src="FRONTEND/images/IMG-20251115-WA0012.jpg"
+                            alt="Sports day">
+                        <div class="gallery-overlay">
+                            <h3>Annual Sports Day</h3>
+                            <p>Friendly competitions and team activities</p>
+                            <button class="view-btn"><i class="fas fa-expand"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lightbox Modal -->
+            <div id="lightbox" class="lightbox">
+                <div class="lightbox-content">
+                    <span class="close-lightbox">&times;</span>
+                    <img id="lightbox-img" src="" alt="">
+                    <div id="lightbox-caption"></div>
+                    <button class="lightbox-btn prev-lightbox"><i class="fas fa-chevron-left"></i></button>
+                    <button class="lightbox-btn next-lightbox"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Thank You!</h3>
+            <p id="confirmationMessage">Your submission has been received successfully.</p>
+            <button class="btn btn-primary close-confirmation">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Load header and footer
+        document.addEventListener('DOMContentLoaded', function () {
+            // Load header
+            fetch('../Components/header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                    // Initialize navigation after loading
+                    const navScript = document.createElement('script');
+                    navScript.src = '../Components/navigation.js';
+                    document.body.appendChild(navScript);
+                });
+
+            // Load footer
+            fetch('../Components/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                });
+        });
+    </script>
+    <script src="../Js/script.js"></script>
+</body>
+
+</html>
