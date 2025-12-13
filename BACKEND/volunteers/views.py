@@ -17,7 +17,11 @@ from .tasks import send_volunteer_confirmation_email
 
 class VolunteerListView(generics.ListCreateAPIView):
     queryset = Volunteer.objects.all()
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # Allow anyone to submit an application (POST), but only authenticated/read-only for list (GET)
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticatedOrReadOnly()]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = VolunteerFilter
     search_fields = ['name', 'email', 'phone', 'skills']

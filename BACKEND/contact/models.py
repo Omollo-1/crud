@@ -3,6 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 
 class ContactMessage(models.Model):
     STATUS_CHOICES = (
@@ -33,7 +34,7 @@ class ContactMessage(models.Model):
     # Response tracking
     replied_at = models.DateTimeField(null=True, blank=True)
     reply_message = models.TextField(blank=True, null=True)
-    replied_by = models.ForeignKey('users.User', on_delete=models.SET_NULL, null=True, blank=True)
+    replied_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     
     # Metadata
     ip_address = models.GenericIPAddressField(null=True, blank=True)

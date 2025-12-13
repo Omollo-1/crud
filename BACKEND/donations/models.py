@@ -1,85 +1,88 @@
 from django.db import models
-
-# Create your models here.
-from django.db import models
 from django.core.validators import MinValueValidator
-from django.utils.translation import gettext_lazy as _
-from users.models import User
 
 class Donation(models.Model):
-    PAYMENT_STATUS_CHOICES = (
+    PAYMENT_METHODS = [
+        ('credit_card', 'Credit Card'),
+        ('mpesa', 'M-Pesa'),
+        ('paypal', 'PayPal'),
+        ('bank_transfer', 'Bank Transfer'),
+    ]
+    
+    DONATION_TYPES = [
+        ('one_time', 'One-time'),
+        ('monthly', 'Monthly'),
+        ('annual', 'Annual'),
+    ]
+    
+    STATUS_CHOICES = [
         ('pending', 'Pending'),
         ('completed', 'Completed'),
         ('failed', 'Failed'),
-        ('refunded', 'Refunded'),
-    )
+        ('cancelled', 'Cancelled'),
+    ]
     
-    PAYMENT_METHOD_CHOICES = (
-        ('credit_card', 'Credit Card'),
-        ('paypal', 'PayPal'),
-        ('bank_transfer', 'Bank Transfer'),
-        ('mobile_money', 'Mobile Money'),
-    )
-    
-    DONATION_TYPE_CHOICES = (
-        ('one_time', 'One Time'),
-        ('monthly', 'Monthly'),
-        ('quarterly', 'Quarterly'),
-        ('yearly', 'Yearly'),
-    )
-    
-    donor = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='donations')
-    donor_name = models.CharField(max_length=255)
+    donor_name = models.CharField(max_length=200)
     donor_email = models.EmailField()
     donor_phone = models.CharField(max_length=20, blank=True, null=True)
-    amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(1)])
-    donation_type = models.CharField(max_length=20, choices=DONATION_TYPE_CHOICES, default='one_time')
-    payment_method = models.CharField(max_length=20, choices=PAYMENT_METHOD_CHOICES)
-    payment_status = models.CharField(max_length=20, choices=PAYMENT_STATUS_CHOICES, default='pending')
-    transaction_id = models.CharField(max_length=255, blank=True, null=True)
-    currency = models.CharField(max_length=3, default='USD')
-    dedication = models.TextField(blank=True, null=True)
-    program = models.ForeignKey('programs.Program', on_delete=models.SET_NULL, null=True, blank=True, related_name='donations')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, validators=[MinValueValidator(0.01)])
+    payment_method = models.CharField(max_length=50, choices=PAYMENT_METHODS, default='credit_card')
+    donation_type = models.CharField(max_length=20, choices=DONATION_TYPES, default='one_time')
     is_anonymous = models.BooleanField(default=False)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
     notes = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
+    def __str__(self):
+        return f"{self.donor_name} - ${self.amount} ({self.status})"
+    
     class Meta:
         ordering = ['-created_at']
-        verbose_name = _('Donation')
-        verbose_name_plural = _('Donations')
+        verbose_name = "Donation"
+        verbose_name_plural = "Donations"
+
+
+class Donor(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    total_donated = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    donation_count = models.IntegerField(default=0)
+    first_donation_date = models.DateTimeField(null=True, blank=True)
+    last_donation_date = models.DateTimeField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"Donation #{self.id} - {self.donor_name} - ${self.amount}"
+        return f"{self.name} (${self.total_donated})"
     
-    @property
-    def display_amount(self):
-        return f"${self.amount} {self.currency}"
-    
-    def mark_as_completed(self, transaction_id=None):
-        self.payment_status = 'completed'
-        if transaction_id:
-            self.transaction_id = transaction_id
-        self.save()
-    
-    def mark_as_failed(self):
-        self.payment_status = 'failed'
-        self.save()
+    class Meta:
+        ordering = ['-total_donated']
+        verbose_name = "Donor"
+        verbose_name_plural = "Donors"
 
-class RecurringDonation(models.Model):
-    donor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recurring_donations')
-    amount = models.DecimalField(max_digits=10, decimal_places=2)
-    frequency = models.CharField(max_length=20, choices=(
-        ('monthly', 'Monthly'),
-        ('quarterly', 'Quarterly'),
-        ('yearly', 'Yearly'),
-    ))
-    payment_method = models.CharField(max_length=20)
+
+class Campaign(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    goal_amount = models.DecimalField(max_digits=12, decimal_places=2)
+    current_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0.00)
+    start_date = models.DateField()
+    end_date = models.DateField()
     is_active = models.BooleanField(default=True)
-    next_payment_date = models.DateField()
-    last_payment_date = models.DateField(null=True, blank=True)
+    image = models.ImageField(upload_to='campaigns/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"Recurring Donation #{self.id} - {self.donor.username}"
+        return self.title
+    
+    def progress_percentage(self):
+        if self.goal_amount > 0:
+            return (self.current_amount / self.goal_amount) * 100
+        return 0
+    
+    class Meta:
+        ordering = ['-created_at']
+        verbose_name = "Campaign"
+        verbose_name_plural = "Campaigns"

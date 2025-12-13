@@ -10,7 +10,7 @@ from datetime import timedelta
 from donations.models import Donation
 from volunteers.models import Volunteer
 from programs.models import Program
-from gallery.models import GalleryItem
+from payments.models import GalleryItem
 from contact.models import ContactMessage, NewsletterSubscriber
 
 class DashboardSummaryView(APIView):

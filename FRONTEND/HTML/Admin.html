@@ -1,466 +1,608 @@
 <!DOCTYPE html>
-<html lang="en">
+< lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard - Chartitze</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Admin Dashboard - Charitize</title>
+        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link
+            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+            rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
+    </head>
 
-<body>
-    <!-- Header -->
-    <div id="header-container"></div>
+    <body>
+        <!-- Header -->
+        <div id="header-container"></div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <div class="container">
-            <div class="page-header">
-                <h1>Admin Dashboard</h1>
-                <p>Manage Chartitze operations, content, and data</p>
-            </div>
-
-            <!-- Admin Login (if not logged in) -->
-            <div id="adminLoginSection" class="admin-section">
-                <div class="admin-login-container">
-                    <div class="admin-login-form">
-                        <h2><i class="fas fa-lock"></i> Admin Login</h2>
-                        <form id="adminLoginForm">
-                            <div class="form-group">
-                                <label for="adminUsername">Username</label>
-                                <input type="text" id="adminUsername" name="adminUsername" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="adminPassword">Password</label>
-                                <input type="password" id="adminPassword" name="adminPassword" required>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" class="btn btn-primary btn-block">Login</button>
-                            </div>
-                        </form>
-                        <div class="admin-note">
-                            <p><small>Default credentials: admin / password123</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Admin Dashboard (shown after login) -->
-            <div id="adminDashboard" class="admin-section hidden">
-                <div class="admin-welcome">
-                    <h2>Welcome, <span id="adminUserName">Admin</span></h2>
-                    <p>Last login: <span id="lastLoginTime">Just now</span></p>
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <div class="page-header">
+                    <h1>Admin Dashboard</h1>
+                    <p>Manage Chartitze operations, content, and data</p>
                 </div>
 
-                <div class="admin-stats">
-                    <div class="admin-stat-card">
-                        <div class="admin-stat-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="admin-stat-content">
-                            <h3 id="stat-volunteers-count">--</h3>
-                            <p>Active Volunteers</p>
-                        </div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <div class="admin-stat-icon">
-                            <i class="fas fa-donate"></i>
-                        </div>
-                        <div class="admin-stat-content">
-                            <h3 id="stat-donations-amount">$--</h3>
-                            <p>Monthly Donations</p>
-                        </div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <div class="admin-stat-icon">
-                            <i class="fas fa-envelope"></i>
-                        </div>
-                        <div class="admin-stat-content">
-                            <h3 id="stat-messages-count">--</h3>
-                            <p>New Messages</p>
-                        </div>
-                    </div>
-                    <div class="admin-stat-card">
-                        <div class="admin-stat-icon">
-                            <i class="fas fa-calendar-check"></i>
-                        </div>
-                        <div class="admin-stat-content">
-                            <h3 id="stat-programs-count">--</h3>
-                            <p>Upcoming Events</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="admin-tabs">
-                    <div class="admin-tab-buttons">
-                        <button class="admin-tab-btn active" data-tab="donations">Donations</button>
-                        <button class="admin-tab-btn" data-tab="volunteers">Volunteers</button>
-                        <button class="admin-tab-btn" data-tab="messages">Messages</button>
-                        <button class="admin-tab-btn" data-tab="content">Content</button>
-                        <button class="admin-tab-btn" data-tab="settings">Settings</button>
-                    </div>
-
-                    <div class="admin-tab-content">
-                        <!-- Donations Tab -->
-                        <div id="donationsTab" class="admin-tab-pane active">
-                            <h3>Recent Donations</h3>
-                            <div class="admin-table-container">
-                                <table class="admin-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Donor</th>
-                                            <th>Amount</th>
-                                            <th>Method</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="recent-donations-tbody">
-                                        <!-- Populated via JS -->
-                                    </tbody>
-                                </table>
-                            </div>
-                            <button class="btn btn-secondary"><i class="fas fa-download"></i> Export Report</button>
-                        </div>
-
-                        <!-- Volunteers Tab -->
-                        <div id="volunteersTab" class="admin-tab-pane">
-                            <h3>Volunteer Applications</h3>
-                            <div class="admin-table-container">
-                                <table class="admin-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Email</th>
-                                            <th>Skills</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="recent-volunteers-tbody">
-                                        <!-- Populated via JS -->
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <!-- Messages Tab -->
-                        <div id="messagesTab" class="admin-tab-pane">
-                            <h3>Contact Messages</h3>
-                            <div class="admin-messages" id="messages-list">
-                                <!-- Populated via JS -->
-                            </div>
-                        </div>
-
-                        <!-- Content Tab -->
-                        <div id="contentTab" class="admin-tab-pane">
-                            <h3>Website Content Management</h3>
-                            <div class="content-management">
-                                <div class="content-section">
-                                    <h4>Edit Home Page Content</h4>
-                                    <textarea class="content-editor" rows="4"
-                                        placeholder="Edit mission statement...">Chartitze is dedicated to transforming the lives of orphaned children by providing them with a loving home, quality education, healthcare, and the emotional support they need to thrive.</textarea>
-                                    <button class="btn btn-small btn-primary">Update</button>
+                <!-- Admin Login (if not logged in) -->
+                <div id="adminLoginSection" class="admin-section">
+                    <div class="admin-login-container">
+                        <div class="admin-login-form">
+                            <h2><i class="fas fa-lock"></i> Admin Login</h2>
+                            <form id="adminLoginForm">
+                                <div class="form-group">
+                                    <label for="adminUsername">Username</label>
+                                    <input type="text" id="adminUsername" name="adminUsername" required>
                                 </div>
-                                <div class="content-section">
-                                    <h4>Manage Gallery Images</h4>
-                                    <div class="gallery-upload">
-                                        <input type="file" id="imageUpload" accept="image/*">
-                                        <button class="btn btn-small"><i class="fas fa-upload"></i> Upload
-                                            Image</button>
+                                <div class="form-group">
+                                    <label for="adminPassword">Password</label>
+                                    <input type="password" id="adminPassword" name="adminPassword" required>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                                </div>
+                            </form>
+                            <div class="admin-note">
+                                <p><small>Default credentials: admin / password123</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Admin Dashboard (shown after login) -->
+                <div id="adminDashboard" class="admin-section hidden">
+                    <div class="admin-welcome">
+                        <h2>Welcome, <span id="adminUserName">Admin</span></h2>
+                        <p>Last login: <span id="lastLoginTime">Just now</span></p>
+                    </div>
+
+                    <div class="admin-stats">
+                        <div class="admin-stat-card">
+                            <div class="admin-stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="admin-stat-content">
+                                <h3 id="stat-volunteers-count">--</h3>
+                                <p>Active Volunteers</p>
+                            </div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="admin-stat-icon">
+                                <i class="fas fa-donate"></i>
+                            </div>
+                            <div class="admin-stat-content">
+                                <h3 id="stat-donations-amount">$--</h3>
+                                <p>Monthly Donations</p>
+                            </div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="admin-stat-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="admin-stat-content">
+                                <h3 id="stat-messages-count">--</h3>
+                                <p>New Messages</p>
+                            </div>
+                        </div>
+                        <div class="admin-stat-card">
+                            <div class="admin-stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="admin-stat-content">
+                                <h3 id="stat-programs-count">--</h3>
+                                <p>Upcoming Events</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-tabs">
+                        <div class="admin-tab-buttons">
+                            <button class="admin-tab-btn active" data-tab="donations">Donations</button>
+                            <button class="admin-tab-btn" data-tab="volunteers">Volunteers</button>
+                            <button class="admin-tab-btn" data-tab="users">Users</button>
+                            <button class="admin-tab-btn" data-tab="messages">Messages</button>
+
+                            <!-- ... (skipping unchanged content) ... -->
+
+                            <!-- Users Tab -->
+                            <div id="usersTab" class="admin-tab-pane">
+                                <h3>Registered Users</h3>
+                                <div class="admin-table-container">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Username</th>
+                                                <th>Email</th>
+                                                <th>Role</th>
+                                                <th>Joined Date</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="users-tbody">
+                                            <!-- Populated via JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Messages Tab -->
+                            <button class="admin-tab-btn" data-tab="content">Content</button>
+                            <button class="admin-tab-btn" data-tab="settings">Settings</button>
+                        </div>
+
+                        <div class="admin-tab-content">
+                            <!-- Donations Tab -->
+                            <div id="donationsTab" class="admin-tab-pane active">
+                                <h3>Recent Donations</h3>
+                                <div class="admin-table-container">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Donor</th>
+                                                <th>Amount</th>
+                                                <th>Method</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recent-donations-tbody">
+                                            <!-- Populated via JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <button class="btn btn-secondary"><i class="fas fa-download"></i> Export Report</button>
+                            </div>
+
+                            <!-- Volunteers Tab -->
+                            <div id="volunteersTab" class="admin-tab-pane">
+                                <h3>Volunteer Applications</h3>
+                                <div class="admin-table-container">
+                                    <table class="admin-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Email</th>
+                                                <th>Skills</th>
+                                                <th>Status</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recent-volunteers-tbody">
+                                            <!-- Populated via JS -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Messages Tab -->
+                            <div id="messagesTab" class="admin-tab-pane">
+                                <h3>Contact Messages</h3>
+                                <div class="admin-messages" id="messages-list">
+                                    <!-- Populated via JS -->
+                                </div>
+                            </div>
+
+                            <!-- Content Tab -->
+                            <div id="contentTab" class="admin-tab-pane">
+                                <h3>Website Content Management</h3>
+                                <div class="content-management">
+                                    <div class="content-section">
+                                        <h4>Edit Home Page Content</h4>
+                                        <textarea class="content-editor" rows="4"
+                                            placeholder="Edit mission statement...">Chartitze is dedicated to transforming the lives of orphaned children by providing them with a loving home, quality education, healthcare, and the emotional support they need to thrive.</textarea>
+                                        <button class="btn btn-small btn-primary">Update</button>
+                                    </div>
+                                    <div class="content-section">
+                                        <h4>Manage Gallery Images</h4>
+                                        <div class="gallery-upload">
+                                            <input type="file" id="imageUpload" accept="image/*">
+                                            <button class="btn btn-small"><i class="fas fa-upload"></i> Upload
+                                                Image</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- Settings Tab -->
-                        <div id="settingsTab" class="admin-tab-pane">
-                            <h3>Admin Settings</h3>
-                            <form class="admin-settings-form">
-                                <div class="form-group">
-                                    <label for="adminEmail">Admin Email</label>
-                                    <input type="email" id="adminEmail" value="admin@chartitze.org">
-                                </div>
-                                <div class="form-group">
-                                    <label for="adminNotifications">Email Notifications</label>
-                                    <select id="adminNotifications">
-                                        <option value="all">All notifications</option>
-                                        <option value="important">Important only</option>
-                                        <option value="none">None</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="timezone">Timezone</label>
-                                    <select id="timezone">
-                                        <option value="est">Eastern Time (ET)</option>
-                                        <option value="cst">Central Time (CT)</option>
-                                        <option value="pst">Pacific Time (PT)</option>
-                                        <option value="gmt" selected>GMT (Nairobi)</option>
-                                    </select>
-                                </div>
-                                <button type="submit" class="btn btn-primary">Save Settings</button>
-                            </form>
+                            <!-- Settings Tab -->
+                            <div id="settingsTab" class="admin-tab-pane">
+                                <h3>Admin Settings</h3>
+                                <form class="admin-settings-form">
+                                    <div class="form-group">
+                                        <label for="adminEmail">Admin Email</label>
+                                        <input type="email" id="adminEmail" value="admin@chartitze.org">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="adminNotifications">Email Notifications</label>
+                                        <select id="adminNotifications">
+                                            <option value="all">All notifications</option>
+                                            <option value="important">Important only</option>
+                                            <option value="none">None</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="timezone">Timezone</label>
+                                        <select id="timezone">
+                                            <option value="est">Eastern Time (ET)</option>
+                                            <option value="cst">Central Time (CT)</option>
+                                            <option value="pst">Pacific Time (PT)</option>
+                                            <option value="gmt" selected>GMT (Nairobi)</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Save Settings</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="admin-logout">
-                    <button id="adminLogoutBtn" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i>
-                        Logout</button>
+                    <div class="admin-logout">
+                        <button id="adminLogoutBtn" class="btn btn-secondary"><i class="fas fa-sign-out-alt"></i>
+                            Logout</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
 
-    <!-- Footer -->
-    <div id="footer-container"></div>
+        <!-- Footer -->
+        <div id="footer-container"></div>
 
-    <script>
-        // Load header and footer
-        document.addEventListener('DOMContentLoaded', function () {
-            // Load header
-            fetch('../Components/header.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('header-container').innerHTML = data;
-                    // Initialize navigation after loading
-                    const navScript = document.createElement('script');
-                    navScript.src = '../Components/navigation.js';
-                    document.body.appendChild(navScript);
+        <script>
+            // Load header and footer
+            document.addEventListener('DOMContentLoaded', function () {
+                // Load header
+                fetch('../Components/header.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('header-container').innerHTML = data;
+                        // Initialize navigation after loading
+                        const navScript = document.createElement('script');
+                        navScript.src = '../Components/navigation.js';
+                        document.body.appendChild(navScript);
+                    });
+
+                // Load footer
+                fetch('../Components/footer.html')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('footer-container').innerHTML = data;
+                    });
+
+                // Initialize admin page functionality
+                initAdminPage();
+            });
+
+            const API_BASE_URL = 'http://127.0.0.1:8000/api';
+
+            function initAdminPage() {
+                const adminLoginForm = document.getElementById('adminLoginForm');
+                const adminDashboard = document.getElementById('adminDashboard');
+                const adminLoginSection = document.getElementById('adminLoginSection');
+                const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+                const adminTabBtns = document.querySelectorAll('.admin-tab-btn');
+
+                // Check if user is already logged in
+                const accessToken = localStorage.getItem('accessToken');
+
+                if (accessToken) {
+                    showAdminDashboard();
+                }
+
+                // Admin login
+                if (adminLoginForm) {
+                    adminLoginForm.addEventListener('submit', async function (e) {
+                        e.preventDefault();
+
+                        const username = document.getElementById('adminUsername').value;
+                        const password = document.getElementById('adminPassword').value;
+                        const loginBtn = this.querySelector('button[type="submit"]');
+
+                        // Show loading state
+                        const originalBtnText = loginBtn.textContent;
+                        loginBtn.textContent = 'Logging in...';
+                        loginBtn.disabled = true;
+
+                        try {
+                            const response = await fetch(`${API_BASE_URL}/users/login/`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ username, password })
+                            });
+
+                            if (response.ok) {
+                                const data = await response.json();
+                                localStorage.setItem('accessToken', data.access);
+                                localStorage.setItem('refreshToken', data.refresh);
+                                localStorage.setItem('adminUsername', username);
+                                localStorage.setItem('lastLogin', new Date().toLocaleString());
+
+                                showAdminDashboard();
+                            } else {
+                                const errorData = await response.json();
+                                alert('Login failed: ' + (errorData.detail || 'Invalid credentials'));
+                            }
+                        } catch (error) {
+                            console.error('Login error:', error);
+                            alert('An error occurred during login. Please ensure the backend is running.');
+                        } finally {
+                            loginBtn.textContent = originalBtnText;
+                            loginBtn.disabled = false;
+                        }
+                    });
+                }
+
+                // Admin logout
+                if (adminLogoutBtn) {
+                    adminLogoutBtn.addEventListener('click', function () {
+                        localStorage.removeItem('accessToken');
+                        localStorage.removeItem('refreshToken');
+                        localStorage.removeItem('adminUsername');
+                        localStorage.removeItem('lastLogin');
+
+                        hideAdminDashboard();
+                    });
+                }
+
+                // Tab switching
+                adminTabBtns.forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const tabId = this.getAttribute('data-tab');
+
+                        adminTabBtns.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+
+                        document.querySelectorAll('.admin-tab-pane').forEach(pane => {
+                            pane.classList.remove('active');
+                        });
+                        document.getElementById(tabId + 'Tab').classList.add('active');
+                    });
                 });
 
-            // Load footer
-            fetch('../Components/footer.html')
-                .then(response => response.text())
-                .then(data => {
-                    document.getElementById('footer-container').innerHTML = data;
-                });
+                function showAdminDashboard() {
+                    adminLoginSection.classList.add('hidden');
+                    adminDashboard.classList.remove('hidden');
 
-            // Initialize admin page functionality
-            initAdminPage();
-        });
+                    const username = localStorage.getItem('adminUsername') || 'Admin';
+                    const lastLogin = localStorage.getItem('lastLogin') || 'Just now';
 
-        const API_BASE_URL = 'http://127.0.0.1:8000/api';
+                    document.getElementById('adminUserName').textContent = username;
+                    document.getElementById('lastLoginTime').textContent = lastLogin;
 
-        function initAdminPage() {
-            const adminLoginForm = document.getElementById('adminLoginForm');
-            const adminDashboard = document.getElementById('adminDashboard');
-            const adminLoginSection = document.getElementById('adminLoginSection');
-            const adminLogoutBtn = document.getElementById('adminLogoutBtn');
-            const adminTabBtns = document.querySelectorAll('.admin-tab-btn');
+                    // Fetch dashboard data
+                    fetchDashboardData();
+                }
 
-            // Check if user is already logged in
-            const accessToken = localStorage.getItem('accessToken');
+                function hideAdminDashboard() {
+                    adminDashboard.classList.add('hidden');
+                    adminLoginSection.classList.remove('hidden');
 
-            if (accessToken) {
-                showAdminDashboard();
-            }
+                    if (adminLoginForm) {
+                        adminLoginForm.reset();
+                    }
+                }
 
-            // Admin login
-            if (adminLoginForm) {
-                adminLoginForm.addEventListener('submit', async function (e) {
-                    e.preventDefault();
-
-                    const username = document.getElementById('adminUsername').value;
-                    const password = document.getElementById('adminPassword').value;
-                    const loginBtn = this.querySelector('button[type="submit"]');
-
-                    // Show loading state
-                    const originalBtnText = loginBtn.textContent;
-                    loginBtn.textContent = 'Logging in...';
-                    loginBtn.disabled = true;
+                async function fetchDashboardData() {
+                    const token = localStorage.getItem('accessToken');
+                    if (!token) return;
 
                     try {
-                        const response = await fetch(`${API_BASE_URL}/token/`, {
-                            method: 'POST',
+                        const response = await fetch(`${API_BASE_URL}/dashboard/stats/`, {
                             headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ username, password })
+                                'Authorization': `Bearer ${token}`
+                            }
                         });
 
                         if (response.ok) {
                             const data = await response.json();
-                            localStorage.setItem('accessToken', data.access);
-                            localStorage.setItem('refreshToken', data.refresh);
-                            localStorage.setItem('adminUsername', username);
-                            localStorage.setItem('lastLogin', new Date().toLocaleString());
-
-                            showAdminDashboard();
-                        } else {
-                            const errorData = await response.json();
-                            alert('Login failed: ' + (errorData.detail || 'Invalid credentials'));
+                            updateDashboardUI(data);
+                        } else if (response.status === 401) {
+                            // Token expired or invalid
+                            localStorage.removeItem('accessToken');
+                            hideAdminDashboard();
+                            alert('Session expired. Please login again.');
                         }
                     } catch (error) {
-                        console.error('Login error:', error);
-                        alert('An error occurred during login. Please ensure the backend is running.');
-                    } finally {
-                        loginBtn.textContent = originalBtnText;
-                        loginBtn.disabled = false;
+                        console.error('Error fetching dashboard data:', error);
                     }
-                });
-            }
-
-            // Admin logout
-            if (adminLogoutBtn) {
-                adminLogoutBtn.addEventListener('click', function () {
-                    localStorage.removeItem('accessToken');
-                    localStorage.removeItem('refreshToken');
-                    localStorage.removeItem('adminUsername');
-                    localStorage.removeItem('lastLogin');
-
-                    hideAdminDashboard();
-                });
-            }
-
-            // Tab switching
-            adminTabBtns.forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const tabId = this.getAttribute('data-tab');
-
-                    adminTabBtns.forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-
-                    document.querySelectorAll('.admin-tab-pane').forEach(pane => {
-                        pane.classList.remove('active');
-                    });
-                    document.getElementById(tabId + 'Tab').classList.add('active');
-                });
-            });
-
-            function showAdminDashboard() {
-                adminLoginSection.classList.add('hidden');
-                adminDashboard.classList.remove('hidden');
-
-                const username = localStorage.getItem('adminUsername') || 'Admin';
-                const lastLogin = localStorage.getItem('lastLogin') || 'Just now';
-
-                document.getElementById('adminUserName').textContent = username;
-                document.getElementById('lastLoginTime').textContent = lastLogin;
-
-                // Fetch dashboard data
-                fetchDashboardData();
-            }
-
-            function hideAdminDashboard() {
-                adminDashboard.classList.add('hidden');
-                adminLoginSection.classList.remove('hidden');
-
-                if (adminLoginForm) {
-                    adminLoginForm.reset();
                 }
-            }
 
-            async function fetchDashboardData() {
-                const token = localStorage.getItem('accessToken');
-                if (!token) return;
+                function updateDashboardUI(data) {
+                    // Update Overview Stats
+                    if (data.overview) {
+                        document.getElementById('stat-volunteers-count').textContent = data.overview.active_volunteers;
+                        document.getElementById('stat-donations-amount').textContent = 'ksh' + data.overview.monthly_donations.toLocaleString();
+                        document.getElementById('stat-messages-count').textContent = data.overview.new_messages;
+                        document.getElementById('stat-programs-count').textContent = data.overview.active_programs;
+                    }
+                }
 
-                try {
-                    const response = await fetch(`${API_BASE_URL}/dashboard/summary/`, {
-                        headers: {
-                            'Authorization': `Bearer ${token}`
+                // --- Users Management ---
+                async function fetchUsers() {
+                    const token = localStorage.getItem('accessToken');
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/users/users/`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        if (response.ok) {
+                            const users = await response.json();
+                            renderUsers(users.results || users);
                         }
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        updateDashboardUI(data);
-                    } else if (response.status === 401) {
-                        // Token expired or invalid
-                        localStorage.removeItem('accessToken');
-                        hideAdminDashboard();
-                        alert('Session expired. Please login again.');
-                    }
-                } catch (error) {
-                    console.error('Error fetching dashboard data:', error);
-                }
-            }
-
-            function updateDashboardUI(data) {
-                // Update Overview Stats
-                if (data.overview) {
-                    document.getElementById('stat-volunteers-count').textContent = data.overview.active_volunteers;
-                    document.getElementById('stat-donations-amount').textContent = 'ksh' + data.overview.monthly_donations.toLocaleString();
-                    document.getElementById('stat-messages-count').textContent = data.overview.new_messages;
-                    document.getElementById('stat-programs-count').textContent = data.overview.active_programs;
+                    } catch (error) { console.error('Error fetching users:', error); }
                 }
 
-                // Update Recent Donations
-                const donationsTbody = document.getElementById('recent-donations-tbody');
-                if (donationsTbody && data.recent_activity) {
-                    const donations = data.recent_activity.filter(item => item.type === 'donation').slice(0, 5);
-
-                    if (donations.length > 0) {
-                        donationsTbody.innerHTML = donations.map(donation => `
-                            <tr>
-                                <td>${donation.date}</td>
-                                <td>${donation.donor_name}</td>
-                                <td>$${donation.amount.toFixed(2)}</td>
-                                <td>Online</td>
-                                <td><span class="status-success">Completed</span></td>
-                            </tr>
-                        `).join('');
-                    } else {
-                        donationsTbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No recent donations</td></tr>';
-                    }
+                function renderUsers(users) {
+                    const tbody = document.getElementById('users-tbody');
+                    if (!tbody) return;
+                    tbody.innerHTML = users.length ? users.map(user => `
+                        <tr>
+                            <td>${user.username}</td>
+                            <td>${user.email}</td>
+                            <td><span class="status-${user.role === 'admin' ? 'success' : 'pending'}">${user.role}</span></td>
+                            <td>${new Date(user.date_joined).toLocaleDateString()}</td>
+                            <td>
+                                <button onclick="deleteUser(${user.id})" class="btn btn-small btn-danger">Delete</button>
+                            </td>
+                        </tr>
+                    `).join('') : '<tr><td colspan="5">No users found</td></tr>';
                 }
 
-                // Update Recent Volunteers
-                const volunteersTbody = document.getElementById('recent-volunteers-tbody');
-                if (volunteersTbody && data.recent_activity) {
-                    const volunteers = data.recent_activity.filter(item => item.type === 'volunteer').slice(0, 5);
+                window.deleteUser = async function (id) {
+                    if (!confirm('Are you sure you want to delete this user?')) return;
+                    const token = localStorage.getItem('accessToken');
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/users/users/${id}/`, {
+                            method: 'DELETE',
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        if (response.ok) { fetchUsers(); }
+                        else { alert('Failed to delete user'); }
+                    } catch (error) { console.error('Error:', error); }
+                };
 
-                    if (volunteers.length > 0) {
-                        volunteersTbody.innerHTML = volunteers.map(vol => `
-                            <tr>
-                                <td>${vol.name}</td>
-                                <td>${vol.email}</td>
-                                <td>--</td>
-                                <td><span class="status-${vol.status === 'approved' ? 'success' : 'pending'}">${vol.status}</span></td>
-                                <td>
-                                    <button class="btn btn-small">View</button>
-                                </td>
-                            </tr>
-                        `).join('');
-                    } else {
-                        volunteersTbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No recent applications</td></tr>';
-                    }
+                // --- Volunteers Management ---
+                async function fetchVolunteers() {
+                    const token = localStorage.getItem('accessToken');
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/volunteers/`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        if (response.ok) {
+                            const volunteers = await response.json();
+                            renderVolunteers(volunteers.results || volunteers);
+                        }
+                    } catch (error) { console.error('Error fetching volunteers:', error); }
                 }
 
+                function renderVolunteers(volunteers) {
+                    const tbody = document.getElementById('recent-volunteers-tbody'); // Reusing existing ID
+                    if (!tbody) return;
+                    tbody.innerHTML = volunteers.length ? volunteers.map(vol => `
+                        <tr>
+                            <td>${vol.name}</td>
+                            <td>${vol.email}</td>
+                            <td>${vol.skills}</td>
+                            <td><span class="status-${vol.status === 'approved' ? 'success' : vol.status === 'rejected' ? 'danger' : 'pending'}">${vol.status}</span></td>
+                            <td>
+                                ${vol.status === 'pending' ? `
+                                <button onclick="updateVolunteerStatus(${vol.id}, 'approved')" class="btn btn-small btn-success">Approve</button>
+                                <button onclick="updateVolunteerStatus(${vol.id}, 'rejected')" class="btn btn-small btn-danger">Reject</button>
+                                ` : ''}
+                            </td>
+                        </tr>
+                    `).join('') : '<tr><td colspan="5">No volunteers found</td></tr>';
+                }
 
-                // Update Messages
-                const messagesList = document.getElementById('messages-list');
-                if (messagesList && data.recent_activity) {
-                    const messages = data.recent_activity.filter(item => item.type === 'message').slice(0, 5);
+                window.updateVolunteerStatus = async function (id, status) {
+                    const token = localStorage.getItem('accessToken');
+                    const notes = prompt(`Enter notes for ${status} (optional):`) || '';
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/volunteers/${id}/update-status/`, {
+                            method: 'PATCH',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ status, notes })
+                        });
+                        if (response.ok) { fetchVolunteers(); fetchDashboardData(); }
+                        else { alert('Failed to update status'); }
+                    } catch (error) { console.error('Error:', error); }
+                };
 
-                    if (messages.length > 0) {
-                        messagesList.innerHTML = messages.map(msg => `
-                            <div class="admin-message">
-                                <div class="message-header">
-                                    <strong>From: ${msg.name}</strong>
-                                    <span class="message-date">${msg.date}</span>
-                                </div>
-                                <div class="message-subject">${msg.subject || 'No Subject'}</div>
-                                <div class="message-preview">${msg.email}</div>
-                                <div class="message-actions">
-                                    <button class="btn btn-small">Reply</button>
-                                    <button class="btn btn-small">Mark as Read</button>
-                                </div>
+                // --- Messages Management ---
+                async function fetchMessages() {
+                    const token = localStorage.getItem('accessToken');
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/contact/messages/`, {
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        if (response.ok) {
+                            const messages = await response.json();
+                            renderMessages(messages.results || messages);
+                        }
+                    } catch (error) { console.error('Error fetching messages:', error); }
+                }
+
+                function renderMessages(messages) {
+                    const list = document.getElementById('messages-list');
+                    if (!list) return;
+                    list.innerHTML = messages.length ? messages.map(msg => `
+                        <div class="admin-message">
+                            <div class="message-header">
+                                <strong>From: ${msg.name} (${msg.status})</strong>
+                                <span class="message-date">${new Date(msg.submitted_at).toLocaleDateString()}</span>
                             </div>
-                        `).join('');
-                    } else {
-                        messagesList.innerHTML = '<p style="text-align:center; padding: 20px;">No new messages</p>';
-                    }
+                            <div class="message-subject">${msg.subject}</div>
+                            <div class="message-body">${msg.message}</div>
+                            <div class="message-actions">
+                                ${msg.status !== 'replied' ? `<button onclick="replyToMessage(${msg.id})" class="btn btn-small btn-primary">Reply</button>` : '<span class="status-success">Replied</span>'}
+                            </div>
+                        </div>
+                    `).join('') : '<p>No messages found</p>';
                 }
-            }
-        }
-    </script>
-    <script src="../Js/script.js"></script>
-</body>
 
-</html>
+                window.replyToMessage = async function (id) {
+                    const token = localStorage.getItem('accessToken');
+                    const reply = prompt('Enter your reply message:');
+                    if (!reply) return;
+
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/contact/messages/${id}/reply/`, {
+                            method: 'PUT',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ reply_message: reply })
+                        });
+                        if (response.ok) {
+                            alert('Reply sent successfully');
+                            fetchMessages();
+                        } else { alert('Failed to send reply'); }
+                    } catch (error) { console.error('Error:', error); }
+                };
+
+                // --- Donations Management ---
+                async function fetchDonations() {
+                    const token = localStorage.getItem('accessToken');
+                    try {
+                        const response = await fetch(`${API_BASE_URL}/donations/donations/`, { // Check URL
+                            headers: { 'Authorization': `Bearer ${token}` }
+                        });
+                        if (response.ok) {
+                            const donations = await response.json();
+                            renderDonations(donations.results || donations);
+                        }
+                    } catch (error) { console.error('Error fetching donations:', error); }
+                }
+
+                function renderDonations(donations) {
+                    const tbody = document.getElementById('recent-donations-tbody');
+                    if (!tbody) return;
+                    tbody.innerHTML = donations.length ? donations.map(d => `
+                        <tr>
+                            <td>${new Date(d.created_at).toLocaleDateString()}</td>
+                            <td>${d.donor_name}</td>
+                            <td>ksh${parseFloat(d.amount).toFixed(2)}</td>
+                            <td>${d.payment_method}</td>
+                            <td><span class="status-${d.status === 'completed' ? 'success' : 'pending'}">${d.status}</span></td>
+                        </tr>
+                     `).join('') : '<tr><td colspan="5">No donations found</td></tr>';
+                }
+
+                // Hook up Tab Clicks
+                document.querySelector('button[data-tab="users"]').addEventListener('click', fetchUsers);
+                document.querySelector('button[data-tab="volunteers"]').addEventListener('click', fetchVolunteers);
+                document.querySelector('button[data-tab="messages"]').addEventListener('click', fetchMessages);
+                document.querySelector('button[data-tab="donations"]').addEventListener('click', fetchDonations);
+
+                // Initial Load
+                fetchDonations(); // Load default tab data
+
+            }
+        </script>
+        <script src="../Js/script.js"></script>
+    </body>
+
+    </html>

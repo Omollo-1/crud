@@ -16,7 +16,13 @@ from .serializers import (
 from .filters import ContactMessageFilter
 
 class ContactMessageListView(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    # permission_classes = [permissions.IsAuthenticatedOrReadOnly] # ORIGINAL
+    
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()] # Only admin can list messages
+
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_class = ContactMessageFilter
     search_fields = ['name', 'email', 'subject', 'message']

@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from users.models import User
+from django.conf import settings
 
 class Volunteer(models.Model):
     STATUS_CHOICES = (
@@ -35,7 +35,7 @@ class Volunteer(models.Model):
         ('full_time', 'Full-time (seasonal)'),
     )
     
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='volunteer_profile', null=True, blank=True)
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='volunteer_profile', null=True, blank=True)
     name = models.CharField(max_length=255)
     email = models.EmailField()
     phone = models.CharField(max_length=20)

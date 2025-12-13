@@ -345,57 +345,43 @@ function initDonationForm() {
     const amountOptions = document.querySelectorAll('.amount-option');
     const customAmountInput = document.getElementById('customAmount');
     const donationAmountInput = document.getElementById('donationAmount');
-    const paymentOptions = document.querySelectorAll('input[name="paymentMethod"]');
-    const paymentDetails = document.querySelectorAll('.payment-details');
 
     if (!donationForm) return;
 
-    // Amount selection
+    // Handle amount selection
     amountOptions.forEach(option => {
         option.addEventListener('click', () => {
+            // Remove active class from all options
             amountOptions.forEach(opt => opt.classList.remove('active'));
+            // Add active class to clicked option
             option.classList.add('active');
 
+            // Update hidden input
             const amount = option.getAttribute('data-amount');
             donationAmountInput.value = amount;
-            if (customAmountInput) customAmountInput.value = '';
+            customAmountInput.value = '';
         });
     });
 
-    // Custom amount
+    // Handle custom amount
     if (customAmountInput) {
         customAmountInput.addEventListener('input', () => {
             amountOptions.forEach(opt => opt.classList.remove('active'));
-            donationAmountInput.value = customAmountInput.value || '25';
+            donationAmountInput.value = customAmountInput.value;
         });
     }
 
-    // Payment method selection
-    paymentOptions.forEach(option => {
-        option.addEventListener('change', () => {
-            paymentDetails.forEach(detail => {
-                detail.classList.add('hidden');
-            });
-
-            const selectedMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
-            const detailsElement = document.getElementById(`${selectedMethod}Details`);
-            if (detailsElement) {
-                detailsElement.classList.remove('hidden');
-            }
-        });
-    });
-
-    // Form validation
     donationForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
+        // Basic Validation
+        const fullName = document.getElementById('fullName').value;
+        const email = document.getElementById('email').value;
+        const amount = donationAmountInput.value;
+
         let isValid = true;
 
-        // Simple validation example
-        const name = document.getElementById('fullName').value;
-        const email = document.getElementById('email').value;
-
-        if (!name.trim()) {
+        if (!fullName.trim()) {
             showError('nameError', 'Please enter your full name');
             isValid = false;
         } else {
@@ -413,15 +399,17 @@ function initDonationForm() {
             showLoading();
 
             const formData = {
-                donor_name: name,
+                donor_name: fullName,
                 donor_email: email,
-                amount: parseFloat(donationAmountInput.value),
-                payment_method: document.querySelector('input[name="paymentMethod"]:checked').value || 'credit_card',
-                donation_type: 'one_time',
+                donor_phone: document.getElementById('phone')?.value || '',
+                amount: parseFloat(amount),
+                payment_method: document.querySelector('input[name="paymentMethod"]:checked')?.value || 'credit_card',
+                donation_type: document.getElementById('donationType')?.value || 'one_time',
                 is_anonymous: false
             };
 
-            fetch(`${API_BASE_URL}/donations/`, {
+
+            fetch(`${API_BASE_URL}/donations/donations/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -438,26 +426,33 @@ function initDonationForm() {
                 .then(data => {
                     hideLoading();
                     document.getElementById('confirmationMessage').textContent =
-                        `Thank you for your donation of $${formData.amount}!`;
-                    document.getElementById('confirmationModal').style.display = 'flex';
+                        'Thank you for your donation! Your support makes a difference.';
+                    const modal = document.getElementById('confirmationModal');
+                    modal.style.display = 'flex';
 
-                    // Reset form
+                    // Redirect after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+
+                    // Also handle OK button click
+                    const closeBtn = modal.querySelector('.close-confirmation');
+                    if (closeBtn) {
+                        closeBtn.onclick = function () {
+                            window.location.href = 'index.html';
+                        }
+                    }
+
                     donationForm.reset();
-                    amountOptions[0].classList.add('active');
-                    donationAmountInput.value = '25';
-                    if (customAmountInput) customAmountInput.value = '';
-                    paymentDetails.forEach(detail => detail.classList.add('hidden'));
-                    document.getElementById('creditCardDetails')?.classList.remove('hidden');
                 })
                 .catch(error => {
                     hideLoading();
                     console.error('Error:', error);
-                    alert('There was an issue processing your donation. Please check your inputs.');
+                    alert('Failed to process donation. Please try again.');
                 });
         }
     });
 }
-
 // Volunteer Form
 function initVolunteerForm() {
     const volunteerForm = document.getElementById('volunteerForm');
@@ -533,6 +528,20 @@ function initVolunteerForm() {
                     document.getElementById('confirmationMessage').textContent =
                         'Thank you for your volunteer application! We will contact you soon.';
                     document.getElementById('confirmationModal').style.display = 'flex';
+
+                    // Redirect after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+
+                    // Also handle OK button click
+                    const modal = document.getElementById('confirmationModal');
+                    const closeBtn = modal.querySelector('.close-confirmation');
+                    if (closeBtn) {
+                        closeBtn.onclick = function () {
+                            window.location.href = 'index.html';
+                        }
+                    }
 
                     volunteerForm.reset();
                 })
@@ -612,6 +621,20 @@ function initContactForm() {
                     document.getElementById('confirmationMessage').textContent =
                         'Thank you for your message! We will respond soon.';
                     document.getElementById('confirmationModal').style.display = 'flex';
+
+                    // Redirect after 3 seconds
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 3000);
+
+                    // Also handle OK button click
+                    const modal = document.getElementById('confirmationModal');
+                    const closeBtn = modal.querySelector('.close-confirmation');
+                    if (closeBtn) {
+                        closeBtn.onclick = function () {
+                            window.location.href = 'index.html';
+                        }
+                    }
 
                     contactForm.reset();
                 })
@@ -705,10 +728,3 @@ function hideLoading() {
     }
 }
 
-// In your FRONTEND code
-const BACKEND_URL = 'http://localhost:5000';  // Your chartitze backend
-
-// Fetch data from chartitze
-fetch(`${BACKEND_URL}/api/data`)  // Adjust endpoint as needed
-  .then(response => response.json())
-  .then(data => console.log(data));

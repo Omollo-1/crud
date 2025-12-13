@@ -1,12 +1,16 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from . import views
 
+router = DefaultRouter()
+router.register(r'donations', views.DonationViewSet, basename='donation')
+router.register(r'donors', views.DonorViewSet, basename='donor')
+router.register(r'campaigns', views.CampaignViewSet, basename='campaign')
+
 urlpatterns = [
-    path('', views.DonationListView.as_view(), name='donation_list'),
-    path('<int:pk>/', views.DonationDetailView.as_view(), name='donation_detail'),
-    path('my-donations/', views.MyDonationsView.as_view(), name='my_donations'),
-    path('<int:pk>/update-status/', views.UpdatePaymentStatusView.as_view(), name='update_payment_status'),
-    path('summary/', views.DonationSummaryView.as_view(), name='donation_summary'),
-    path('recurring/', views.RecurringDonationListView.as_view(), name='recurring_donation_list'),
-    path('recurring/<int:pk>/', views.RecurringDonationDetailView.as_view(), name='recurring_donation_detail'),
+    path('', include(router.urls)),
+    # Custom views that don't fit into the router can remain as specific paths if needed, 
+    # but based on views.py, most are covered or can be actions.
+    # Dashboard stats is a GenericAPIView, so it needs a specific path:
+    path('dashboard/stats/', views.DashboardStatsView.as_view(), name='dashboard_stats'),
 ]

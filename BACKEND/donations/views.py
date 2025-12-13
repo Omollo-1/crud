@@ -1,149 +1,182 @@
-
-
-# Create your views here.
-from rest_framework import generics, permissions, status, filters
+from rest_framework import viewsets, generics, status, permissions
 from rest_framework.response import Response
-from rest_framework.views import APIView
-from django_filters.rest_framework import DjangoFilterBackend
-from django.db.models import Sum, Count, Q
-from django.utils import timezone
-from datetime import timedelta
-from .models import Donation, RecurringDonation
+from rest_framework.decorators import action
+from django.db.models import Sum, Count
+from .models import Donation, Donor, Campaign
 from .serializers import (
-    DonationSerializer, CreateDonationSerializer,
-    DonationSummarySerializer, RecurringDonationSerializer
+    DonationSerializer, 
+    DonorSerializer, 
+    CampaignSerializer
 )
-from .filters import DonationFilter
-from .tasks import send_donation_confirmation_email
 
-class DonationListView(generics.ListCreateAPIView):
-    queryset = Donation.objects.all()
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_class = DonationFilter
-    search_fields = ['donor_name', 'donor_email', 'transaction_id']
-    ordering_fields = ['amount', 'created_at']
-    
-    def get_serializer_class(self):
-        if self.request.method == 'POST':
-            return CreateDonationSerializer
-        return DonationSerializer
-    
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        if not self.request.user.is_staff:
-            # Non-staff users can only see their own donations or anonymous donations
-            queryset = queryset.filter(
-                Q(donor=self.request.user) if self.request.user.is_authenticated else Q()
-            )
-        return queryset
-    
-    def perform_create(self, serializer):
-        donation = serializer.save()
-        # Send confirmation email asynchronously
-        send_donation_confirmation_email.delay(donation.id)
-
-class DonationDetailView(generics.RetrieveUpdateDestroyAPIView):
+class DonationViewSet(viewsets.ModelViewSet):
     queryset = Donation.objects.all()
     serializer_class = DonationSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]  # Allow public donations
     
-    def get_permissions(self):
-        if self.request.method in ['GET']:
-            return [permissions.IsAuthenticated()]
-        return [permissions.IsAdminUser()]
-
-class MyDonationsView(generics.ListAPIView):
-    serializer_class = DonationSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get_queryset(self):
-        return Donation.objects.filter(donor=self.request.user).order_by('-created_at')
-
-class UpdatePaymentStatusView(generics.UpdateAPIView):
-    queryset = Donation.objects.all()
-    serializer_class = DonationSerializer
-    permission_classes = [permissions.IsAdminUser]
-    
-    def update(self, request, *args, **kwargs):
-        donation = self.get_object()
-        new_status = request.data.get('payment_status')
-        transaction_id = request.data.get('transaction_id')
+    @action(detail=False, methods=['get'])
+    def stats(self, request):
+        total_donations = Donation.objects.aggregate(
+            total_amount=Sum('amount'),
+            total_count=Count('id')
+        )
         
-        if new_status == 'completed':
-            donation.mark_as_completed(transaction_id)
-        elif new_status == 'failed':
-            donation.mark_as_failed()
-        else:
-            donation.payment_status = new_status
-            donation.save()
+        recent_donations = Donation.objects.all()[:10]
+        recent_serializer = DonationSerializer(recent_donations, many=True)
         
-        serializer = self.get_serializer(donation)
+        return Response({
+            'total_amount': total_donations['total_amount'] or 0,
+            'total_count': total_donations['total_count'] or 0,
+            'recent_donations': recent_serializer.data
+        })
+    
+    @action(detail=False, methods=['get'])
+    def by_status(self, request):
+        status_stats = Donation.objects.values('status').annotate(
+            count=Count('id'),
+            amount=Sum('amount')
+        )
+        return Response(status_stats)
+
+
+class DonorViewSet(viewsets.ModelViewSet):
+    queryset = Donor.objects.all()
+    serializer_class = DonorSerializer
+    permission_classes = [permissions.AllowAny]  # Allow public access
+    
+    @action(detail=False, methods=['get'])
+    def top_donors(self, request):
+        top_donors = Donor.objects.order_by('-total_donated')[:10]
+        serializer = DonorSerializer(top_donors, many=True)
         return Response(serializer.data)
 
-class DonationSummaryView(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class CampaignViewSet(viewsets.ModelViewSet):
+    queryset = Campaign.objects.all()
+    serializer_class = CampaignSerializer
+    permission_classes = [permissions.AllowAny]  # Allow public access
     
+    @action(detail=True, methods=['post'])
+    def donate(self, request, pk=None):
+        campaign = self.get_object()
+        amount = request.data.get('amount')
+        
+        if amount:
+            campaign.current_amount += float(amount)
+            campaign.save()
+            
+            # Create donation record
+            donation = Donation.objects.create(
+                donor_name=request.data.get('donor_name'),
+                donor_email=request.data.get('donor_email'),
+                amount=amount,
+                payment_method=request.data.get('payment_method', 'mpesa'),
+                status='pending'
+            )
+            
+            return Response({
+                'message': 'Donation initiated successfully',
+                'campaign': CampaignSerializer(campaign).data,
+                'donation': DonationSerializer(donation).data
+            })
+        
+        return Response(
+            {'error': 'Amount is required'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+
+# Dashboard Stats View
+from volunteers.models import Volunteer
+from contact.models import ContactMessage
+from rest_framework import generics, status
+
+class DashboardStatsView(generics.GenericAPIView):
     def get(self, request):
         # Total donations
-        total_donations = Donation.objects.filter(
-            payment_status='completed'
-        ).aggregate(total=Sum('amount'))['total'] or 0
-        
-        # Total unique donors
-        total_donors = Donation.objects.filter(
-            payment_status='completed'
-        ).values('donor_email').distinct().count()
-        
-        # Monthly total (current month)
-        current_month = timezone.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-        monthly_total = Donation.objects.filter(
-            payment_status='completed',
-            created_at__gte=current_month
-        ).aggregate(total=Sum('amount'))['total'] or 0
-        
-        # Yearly total (current year)
-        current_year = timezone.now().replace(month=1, day=1, hour=0, minute=0, second=0, microsecond=0)
-        yearly_total = Donation.objects.filter(
-            payment_status='completed',
-            created_at__gte=current_year
-        ).aggregate(total=Sum('amount'))['total'] or 0
+        total_stats = Donation.objects.aggregate(
+            total_amount=Sum('amount'),
+            total_count=Count('id')
+        )
         
         # Recent donations
-        recent_donations = Donation.objects.filter(
-            payment_status='completed'
-        ).order_by('-created_at')[:10]
+        recent_donations = Donation.objects.select_related().order_by('-created_at')[:5]
         
-        data = {
-            'total_donations': total_donations,
-            'total_donors': total_donors,
-            'monthly_total': monthly_total,
-            'yearly_total': yearly_total,
-            'recent_donations': DonationSerializer(recent_donations, many=True).data
-        }
+        # Campaign progress
+        campaigns = Campaign.objects.all()
         
-        serializer = DonationSummarySerializer(data)
-        return Response(serializer.data)
+        # Status breakdown
+        status_stats = Donation.objects.values('status').annotate(
+            count=Count('id'),
+            amount=Sum('amount')
+        )
+        
+        # Top donors
+        top_donors = Donor.objects.order_by('-total_donated')[:5]
 
-class RecurringDonationListView(generics.ListCreateAPIView):
-    queryset = RecurringDonation.objects.all()
-    serializer_class = RecurringDonationSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get_queryset(self):
-        if self.request.user.is_staff:
-            return self.queryset.all()
-        return self.queryset.filter(donor=self.request.user)
-    
-    def perform_create(self, serializer):
-        serializer.save(donor=self.request.user)
+        # Volunteer Stats
+        active_volunteers = Volunteer.objects.filter(status='active').count()
+        new_volunteers = Volunteer.objects.filter(status='pending').count()
+        recent_volunteers = Volunteer.objects.order_by('-created_at')[:5]
 
-class RecurringDonationDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = RecurringDonation.objects.all()
-    serializer_class = RecurringDonationSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    
-    def get_queryset(self):
-        if self.request.user.is_staff:
-            return self.queryset.all()
-        return self.queryset.filter(donor=self.request.user)
+        # Message Stats
+        new_messages = ContactMessage.objects.filter(status='new').count()
+        recent_messages = ContactMessage.objects.order_by('-submitted_at')[:5]
+
+        # Combine recent activity (simplistic approach: just return separate lists, easy for frontend)
+        # Or I can conform to the exact structure the frontend expects.
+        # Frontend currently expects:
+        # data.overview { active_volunteers, monthly_donations, new_messages, active_programs }
+        # data.recent_activity: [{type: 'donation', ...}, {type: 'volunteer', ...}, {type: 'message', ...}]
+        
+        # Let's build the recent_activity list manually
+        recent_activity = []
+        
+        for d in recent_donations:
+            recent_activity.append({
+                'type': 'donation',
+                'date': d.created_at.strftime('%Y-%m-%d'),
+                'donor_name': d.donor_name,
+                'amount': float(d.amount),
+                'status': d.status
+            })
+            
+        for v in recent_volunteers:
+            recent_activity.append({
+                'type': 'volunteer',
+                'date': v.created_at.strftime('%Y-%m-%d'),
+                'name': v.name,
+                'email': v.email,
+                'status': v.status
+            })
+            
+        for m in recent_messages:
+            recent_activity.append({
+                'type': 'message',
+                'date': m.submitted_at.strftime('%Y-%m-%d'),
+                'name': m.name,
+                'email': m.email,
+                'subject': m.subject,
+                'status': m.status
+            })
+            
+        # Sort combined activity by date (descending)
+        recent_activity.sort(key=lambda x: x['date'], reverse=True)
+        
+        return Response({
+            'overview': {
+                'active_volunteers': active_volunteers,
+                'monthly_donations': total_stats['total_amount'] or 0, # Total for now, can be refined to monthly
+                'new_messages': new_messages,
+                'active_programs': campaigns.count(), # Using campaigns as programs proxy
+                'pending_volunteers': new_volunteers
+            },
+            'recent_activity': recent_activity[:15], # Return top 15 combined
+            'total_donations': {
+                'amount': total_stats['total_amount'] or 0,
+                'count': total_stats['total_count'] or 0
+            },
+            'campaigns': CampaignSerializer(campaigns, many=True).data,
+            'status_breakdown': list(status_stats),
+            'top_donors': DonorSerializer(top_donors, many=True).data
+        })

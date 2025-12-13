@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register - Charitize</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
+    <style>
+        /* Auth specific styles for premium look */
+        .auth-section {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, rgba(230, 57, 70, 0.05) 0%, rgba(42, 157, 143, 0.05) 100%);
+            padding: 40px 20px;
+        }
+
+        .auth-container {
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            min-height: 600px;
+        }
+
+        .auth-image {
+            flex: 1;
+            background: linear-gradient(rgba(38, 70, 83, 0.7), rgba(38, 70, 83, 0.8)), url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px;
+            color: white;
+            text-align: center;
+        }
+
+        .auth-image h2 {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .auth-image p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .auth-forms {
+            flex: 1;
+            padding: 50px;
+            position: relative;
+        }
+
+        .auth-toggle {
+            display: flex;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #f1f1f1;
+        }
+
+        .toggle-btn {
+            padding: 15px 25px;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: 1.1rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gray-color);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-btn.active {
+            color: var(--primary-color);
+        }
+
+        .toggle-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+
+        .form-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .form-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .social-login {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .social-buttons-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            color: #555;
+            transition: all 0.3s ease;
+            background: white;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            color: white;
+            border-color: transparent;
+        }
+
+        .social-btn.google:hover {
+            background-color: #DB4437;
+        }
+
+        .social-btn.facebook:hover {
+            background-color: #4267B2;
+        }
+
+        .social-btn.x-twitter:hover {
+            background-color: #000000;
+        }
+
+        .message-box {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: none;
+            font-size: 0.95rem;
+        }
+
+        .message-box.error {
+            background-color: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        .message-box.success {
+            background-color: #d1fae5;
+            color: #059669;
+            border: 1px solid #a7f3d0;
+        }
+
+        @media (max-width: 768px) {
+            .auth-container {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .auth-image {
+                padding: 40px 20px;
+                min-height: 200px;
+            }
+
+            .auth-forms {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="auth-section">
+            <div class="auth-container">
+                <div class="auth-image">
+                    <h2>Welcome Back</h2>
+                    <p>Join our community of changemakers and help us provide a loving home for every child.</p>
+                </div>
+
+                <div class="auth-forms">
+                    <div class="auth-toggle">
+                        <button class="toggle-btn active" id="loginToggle">Sign In</button>
+                        <button class="toggle-btn" id="registerToggle">Sign Up</button>
+                    </div>
+
+                    <div id="statusMessage" class="message-box"></div>
+
+                    <!-- Login Form -->
+                    <div class="form-content active" id="loginForm">
+                        <form id="login-form">
+                            <div class="form-group">
+                                <label for="login-username">Username</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="login-username" placeholder="Enter your username" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="login-password">Password</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="login-password" placeholder="Enter your password"
+                                        required>
+                                </div>
+                            </div>
+
+                            <a href="#"
+                                style="display: block; text-align: right; margin-bottom: 20px; color: var(--gray-color); font-size: 0.9rem;">Forgot
+                                Password?</a>
+
+                            <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                        </form>
+                    </div>
+
+                    <!-- Register Form -->
+                    <div class="form-content" id="registerForm">
+                        <form id="register-form">
+                            <div class="form-group">
+                                <label for="reg-username">Username</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="reg-username" placeholder="Choose a username" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reg-email">Email Address</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-envelope"></i>
+                                    <input type="email" id="reg-email" placeholder="Enter your email" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reg-password">Password</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="reg-password" placeholder="Create a password" required>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="reg-confirm-password">Confirm Password</label>
+                                <div class="input-with-icon">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="reg-confirm-password" placeholder="Confirm your password"
+                                        required>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+                        </form>
+                    </div>
+
+                    <div class="social-login">
+                        <p style="margin-bottom: 20px; color: var(--gray-color); font-size: 0.9rem;">Or continue with
+                        </p>
+                        <div class="social-buttons-container">
+                            <button type="button" class="social-btn google" id="googleLogin"
+                                title="Sign in with Google">
+                                <i class="fab fa-google"></i>
+                            </button>
+                            <button type="button" class="social-btn facebook" id="facebookLogin"
+                                title="Sign in with Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </button>
+                            <button type="button" class="social-btn x-twitter" id="xLogin" title="Sign in with X">
+                                <i class="fa-brands fa-x-twitter"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script>
+        // Header & Footer Loader
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('../Components/header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                    const navScript = document.createElement('script');
+                    navScript.src = '../Components/navigation.js';
+                    document.body.appendChild(navScript);
+                });
+
+            fetch('../Components/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                });
+        });
+
+        // Toggle Logic
+        const loginToggle = document.getElementById('loginToggle');
+        const registerToggle = document.getElementById('registerToggle');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const statusMessage = document.getElementById('statusMessage');
+
+        function showMessage(msg, type) {
+            statusMessage.textContent = msg;
+            statusMessage.className = `message-box ${type}`;
+            statusMessage.style.display = 'block';
+        }
+
+        function switchTab(tab) {
+            statusMessage.style.display = 'none';
+            if (tab === 'login') {
+                loginToggle.classList.add('active');
+                registerToggle.classList.remove('active');
+                loginForm.classList.add('active');
+                registerForm.classList.remove('active');
+            } else {
+                registerToggle.classList.add('active');
+                loginToggle.classList.remove('active');
+                registerForm.classList.add('active');
+                loginForm.classList.remove('active');
+            }
+        }
+
+        loginToggle.addEventListener('click', () => switchTab('login'));
+        registerToggle.addEventListener('click', () => switchTab('register'));
+
+        // Handle Login
+        document.getElementById('login-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            const btn = this.querySelector('button');
+            const originalText = btn.textContent;
+
+            try {
+                btn.textContent = 'Signing in...';
+                btn.disabled = true;
+
+                // Adjust the API URL as needed
+                const response = await fetch('http://127.0.0.1:8000/api/users/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Success logic
+                    showMessage('Login successful! Redirecting...', 'success');
+
+                    // Store tokens
+                    if (data.access) localStorage.setItem('accessToken', data.access);
+                    if (data.refresh) localStorage.setItem('refreshToken', data.refresh);
+                    if (data.user) localStorage.setItem('user', JSON.stringify(data.user));
+
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 1000);
+                } else {
+                    showMessage(data.detail || 'Login failed. Please check your credentials.', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('An error occurred. Please try again.', 'error');
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        });
+
+        // Handle Register
+        document.getElementById('register-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const username = document.getElementById('reg-username').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            const confirmPassword = document.getElementById('reg-confirm-password').value;
+            const btn = this.querySelector('button');
+            const originalText = btn.textContent;
+
+            if (password !== confirmPassword) {
+                showMessage('Passwords do not match.', 'error');
+                return;
+            }
+
+            try {
+                btn.textContent = 'Creating account...';
+                btn.disabled = true;
+
+                // Adjust the API URL as needed
+                const response = await fetch('http://127.0.0.1:8000/api/users/register/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        username,
+                        email,
+                        password,
+                        password2: confirmPassword  // Backend expects password2 for confirmation
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showMessage('Registration successful! Please sign in.', 'success');
+                    setTimeout(() => {
+                        switchTab('login');
+                        // Pre-fill username if possible
+                        document.getElementById('login-username').value = username;
+                    }, 1500);
+                } else {
+                    // Handle validation errors (often data is an object with field keys)
+                    let errorMsg = 'Registration failed.';
+                    if (typeof data === 'object') {
+                        const errors = Object.values(data).flat();
+                        if (errors.length > 0) errorMsg = errors[0];
+                    }
+                    showMessage(errorMsg, 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('An error occurred. Please try again.', 'error');
+            } finally {
+                btn.textContent = originalText;
+                btn.disabled = false;
+            }
+        });
+        // Social Login Handler
+        function handleSocialLogin(provider) {
+            // Map provider names to django-allauth provider IDs
+            const providerMap = {
+                'Google': 'google',
+                'Facebook': 'facebook',
+                'X': 'twitter'
+            };
+
+            const providerId = providerMap[provider];
+
+            // Redirect to the OAuth provider's authentication page
+            // The backend will handle the OAuth flow and redirect back to the frontend
+            window.location.href = `http://127.0.0.1:8000/accounts/${providerId}/login/`;
+        }
+
+        document.getElementById('googleLogin').addEventListener('click', () => handleSocialLogin('Google'));
+        document.getElementById('facebookLogin').addEventListener('click', () => handleSocialLogin('Facebook'));
+        document.getElementById('xLogin').addEventListener('click', () => handleSocialLogin('X'));
+
+    </script>
+</body>
+
+</html>
