@@ -1,0 +1,70 @@
+/* Custom Admin Styles for Charitize */
+
+#header {
+    background: #264653 !important;
+    /* Dark Teal */
+    color: #fff !important;
+}
+
+div.breadcrumbs {
+    background: #2a9d8f !important;
+    /* Secondary Green */
+    color: #fff !important;
+}
+
+div.breadcrumbs a {
+    color: #fff !important;
+}
+
+.module h2,
+.module caption,
+.inline-group h2 {
+    background: #264653 !important;
+    color: #fff !important;
+}
+
+.button,
+input[type=submit],
+input[type=button],
+.submit-row input,
+a.button {
+    background: #e63946 !important;
+    /* Primary Red */
+    border-radius: 5px !important;
+    border: none !important;
+    transition: all 0.3s ease !important;
+}
+
+.button:hover,
+input[type=submit]:hover,
+a.button:hover {
+    background: #c1121f !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.button.default,
+input[type=submit].default {
+    background: #2a9d8f !important;
+}
+
+.button.default:hover,
+input[type=submit].default:hover {
+    background: #21867a !important;
+}
+
+/* Sidebar branding */
+#nav-sidebar {
+    background: #f8f9fa !important;
+    border-right: 1px solid #e9ecef !important;
+}
+
+#nav-sidebar .module th,
+#nav-sidebar .module td {
+    border-bottom: 1px solid #e9ecef !important;
+}
+
+#nav-sidebar a:hover {
+    color: #e63946 !important;
+    background: #fff !important;
+}

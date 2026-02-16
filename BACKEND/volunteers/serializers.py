@@ -22,7 +22,7 @@ class CreateVolunteerSerializer(serializers.ModelSerializer):
         fields = ['name', 'email', 'phone', 'age', 'occupation', 'address',
                   'skills', 'interests', 'availability', 'preferred_time',
                   'commitment_level', 'motivation', 'emergency_contact_name',
-                  'emergency_contact_phone', 'emergency_contact_relation']
+                  'emergency_contact_phone', 'emergency_contact_relation', 'start_date']
     
     def create(self, validated_data):
         request = self.context.get('request')

@@ -1,0 +1,7 @@
+Volunteer Status Update
+
+Hello {{ volunteer.name }},
+
+Your volunteer application status has been updated to: {{ status }}
+
+Visit our site: {{ site_url }}

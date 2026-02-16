@@ -36,7 +36,12 @@ class CreateContactMessageSerializer(serializers.ModelSerializer):
         
         # Send notification email
         from .tasks import send_contact_notification_email
-        send_contact_notification_email.delay(message.id)
+        try:
+            send_contact_notification_email.delay(message.id)
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Failed to send contact notification email: {e}")
         
         return message
 
@@ -84,7 +89,12 @@ class SubscribeNewsletterSerializer(serializers.Serializer):
         
         # Send welcome email
         from .tasks import send_newsletter_welcome_email
-        send_newsletter_welcome_email.delay(subscriber.id)
+        try:
+            send_newsletter_welcome_email.delay(subscriber.id)
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Failed to send newsletter welcome email: {e}")
         
         return subscriber
 

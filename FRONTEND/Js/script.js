@@ -409,7 +409,7 @@ function initDonationForm() {
             };
 
 
-            fetch(`${API_BASE_URL}/donations/donations/`, {
+            fetch(`${API_BASE_URL}/donations/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -448,7 +448,22 @@ function initDonationForm() {
                 .catch(error => {
                     hideLoading();
                     console.error('Error:', error);
-                    alert('Failed to process donation. Please try again.');
+
+                    // Try to parse and display specific error messages
+                    try {
+                        const errorObj = JSON.parse(error.message);
+                        let errorMessage = 'Failed to process donation:\n';
+                        for (const [field, messages] of Object.entries(errorObj)) {
+                            if (Array.isArray(messages)) {
+                                errorMessage += `${field}: ${messages.join(', ')}\n`;
+                            } else {
+                                errorMessage += `${field}: ${messages}\n`;
+                            }
+                        }
+                        alert(errorMessage);
+                    } catch (e) {
+                        alert('Failed to process donation. Please try again.');
+                    }
                 });
         }
     });
@@ -500,13 +515,30 @@ function initVolunteerForm() {
         if (isValid) {
             showLoading();
 
+            // Collect interests (checkboxes)
+            const interests = [];
+            document.querySelectorAll('input[name="volunteerInterests"]:checked').forEach(checkbox => {
+                interests.push(checkbox.value);
+            });
+
+            // Collect availability (checkboxes)
+            const availability = [];
+            document.querySelectorAll('input[name="volunteerAvailability"]:checked').forEach(checkbox => {
+                availability.push(checkbox.value);
+            });
+
             const formData = {
                 name: name,
                 email: email,
                 age: parseInt(age),
                 phone: document.getElementById('volunteerPhone')?.value || '',
                 occupation: document.getElementById('volunteerOccupation')?.value || '',
-                motivation: document.getElementById('volunteerMessage')?.value || '',
+                skills: document.getElementById('volunteerSkills')?.value || '',
+                interests: interests,
+                availability: availability,
+                commitment_level: document.getElementById('volunteerCommitment')?.value || '',
+                motivation: document.getElementById('volunteerMotivation')?.value || '',
+                start_date: document.getElementById('volunteerStartDate')?.value || null,
             };
 
             fetch(`${API_BASE_URL}/volunteers/`, {
@@ -548,7 +580,22 @@ function initVolunteerForm() {
                 .catch(error => {
                     hideLoading();
                     console.error('Error:', error);
-                    alert('Failed to submit application. Please try again.');
+
+                    // Try to parse and display specific error messages
+                    try {
+                        const errorObj = JSON.parse(error.message);
+                        let errorMessage = 'Failed to submit application:\n';
+                        for (const [field, messages] of Object.entries(errorObj)) {
+                            if (Array.isArray(messages)) {
+                                errorMessage += `${field}: ${messages.join(', ')}\n`;
+                            } else {
+                                errorMessage += `${field}: ${messages}\n`;
+                            }
+                        }
+                        alert(errorMessage);
+                    } catch (e) {
+                        alert('Failed to submit application. Please try again.');
+                    }
                 });
         }
     });
@@ -662,7 +709,7 @@ function initNewsletterForm() {
         if (email && validateEmail(email)) {
             showLoading();
 
-            fetch(`${API_BASE_URL}/contact/newsletter/`, {
+            fetch(`${API_BASE_URL}/contact/newsletter/subscribe/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

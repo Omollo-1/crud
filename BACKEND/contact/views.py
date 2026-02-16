@@ -76,11 +76,16 @@ class ReplyContactMessageView(generics.UpdateAPIView):
         
         # Send reply
         from .tasks import send_contact_reply_email
-        send_contact_reply_email.delay(
-            message.id, 
-            serializer.validated_data['reply_message'],
-            request.user.id
-        )
+        try:
+            send_contact_reply_email.delay(
+                message.id, 
+                serializer.validated_data['reply_message'],
+                request.user.id
+            )
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Failed to send contact reply email: {e}")
         
         return Response({
             'message': 'Reply sent successfully',

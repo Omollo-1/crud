@@ -45,7 +45,13 @@ class VolunteerListView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         volunteer = serializer.save()
         # Send confirmation email asynchronously
-        send_volunteer_confirmation_email.delay(volunteer.id)
+        try:
+            send_volunteer_confirmation_email.delay(volunteer.id)
+        except Exception as e:
+            # Log the error but don't fail the request
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Failed to send volunteer confirmation email: {e}")
 
 class VolunteerDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Volunteer.objects.all()
@@ -91,7 +97,12 @@ class UpdateVolunteerStatusView(generics.UpdateAPIView):
         volunteer.save()
         
         # Send status update email
-        send_volunteer_status_update_email.delay(volunteer.id, volunteer.status)
+        try:
+            send_volunteer_status_update_email.delay(volunteer.id, volunteer.status)
+        except Exception as e:
+            import logging
+            logger = logging.getLogger(__name__)
+            logger.error(f"Failed to send volunteer status update email: {e}")
         
         return Response(VolunteerSerializer(volunteer).data)
 

@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'payments',
     'contact',
     'volunteers',
+    'students',
 ]
 
 SITE_ID = 1
@@ -125,13 +126,14 @@ WSGI_APPLICATION = 'chartitze.wsgi.application'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'chartitze' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'dashboard.context_processors.dashboard_stats',
             ],
         },
     },
@@ -198,7 +200,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
 
+# Admin Interface Theme
+ADMIN_INTERFACE_CONFIG = {
+    'THEME_COLOR': '#264653',  # Dark Teal from frontend
+    'PRIMARY_COLOR': '#e63946', # Primary Red from frontend
+    'SECONDARY_COLOR': '#2a9d8f', # Secondary Green from frontend
+}
+
 # STK Push Settings (M-Pesa Daraja API - Kenya)
+
 # For production, update these with your actual credentials from https://developer.safaricom.co.ke/
 MPESA_ENVIRONMENT = config('MPESA_ENVIRONMENT', default='sandbox')  # 'sandbox' or 'production'
 
@@ -270,3 +280,16 @@ ACCOUNT_EMAIL_VERIFICATION = 'optional'
 ACCOUNT_ADAPTER = 'users.adapters.CustomAccountAdapter'
 SOCIALACCOUNT_ADAPTER = 'users.adapters.CustomSocialAccountAdapter'
 SOCIALACCOUNT_AUTO_SIGNUP = True
+
+# Missing Settings
+SITE_URL = config('SITE_URL', default='http://localhost:8000')
+ADMIN_EMAIL = config('ADMIN_EMAIL', default='admin@example.com')
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='webmaster@localhost')
+
+# Email Configuration from .env
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' if DEBUG else 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST', default='localhost')
+EMAIL_PORT = config('EMAIL_PORT', default=1025, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
