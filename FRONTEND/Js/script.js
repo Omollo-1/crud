@@ -53,12 +53,23 @@ document.addEventListener('DOMContentLoaded', function () {
 function initMobileNavigation() {
     const navToggle = document.getElementById('navToggle');
     const navMenu = document.getElementById('navMenu');
+    const navOverlay = document.getElementById('navOverlay');
 
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', () => {
             navMenu.classList.toggle('active');
             navToggle.classList.toggle('active');
+            if (navOverlay) navOverlay.classList.toggle('active');
         });
+
+        // Close mobile menu when clicking on overlay
+        if (navOverlay) {
+            navOverlay.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                navOverlay.classList.remove('active');
+            });
+        }
 
         // Close mobile menu when clicking on a link
         const navLinks = document.querySelectorAll('.nav-link');
@@ -66,6 +77,7 @@ function initMobileNavigation() {
             link.addEventListener('click', () => {
                 navMenu.classList.remove('active');
                 navToggle.classList.remove('active');
+                if (navOverlay) navOverlay.classList.remove('active');
             });
         });
     }
