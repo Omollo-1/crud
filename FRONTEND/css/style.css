@@ -189,6 +189,11 @@ ul {
     align-items: center;
 }
 
+.sidebar-header,
+.sidebar-footer {
+    display: none;
+}
+
 .nav-item {
     margin-left: 30px;
 }
@@ -1828,26 +1833,107 @@ blockquote {
         flex-direction: column;
         background-color: white;
         box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
-        padding: 80px 30px 40px;
+        padding: 0;
         transition: var(--transition);
         z-index: 999;
         overflow-y: auto;
         align-items: flex-start;
+        display: block;
     }
 
     .nav-menu.active {
         left: 0;
     }
 
-    .nav-item {
-        margin: 15px 0;
+    .sidebar-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid var(--light-gray);
         width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .sidebar-header .logo {
+        font-size: 1.2rem;
+    }
+
+    .close-sidebar {
+        background: none;
+        border: none;
+        font-size: 2rem;
+        color: var(--dark-color);
+        cursor: pointer;
+    }
+
+    .nav-item {
+        margin: 0;
+        width: 100%;
+        padding: 0 20px;
     }
 
     .nav-link {
-        font-size: 1.1rem;
+        padding: 12px 0;
+        font-size: 1rem;
         display: block;
         width: 100%;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .nav-item .btn {
+        margin: 20px 0;
+        width: 100%;
+    }
+
+    .sidebar-footer {
+        display: block;
+        padding: 30px 20px;
+        background-color: var(--light-gray);
+        margin-top: 20px;
+        width: 100%;
+    }
+
+    .sidebar-contact {
+        margin-bottom: 20px;
+    }
+
+    .sidebar-contact p {
+        font-size: 0.9rem;
+        color: var(--gray-color);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .sidebar-contact i {
+        margin-right: 10px;
+        color: var(--primary-color);
+    }
+
+    .sidebar-social {
+        display: flex;
+        gap: 15px;
+    }
+
+    .sidebar-social a {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--dark-color);
+        font-size: 1rem;
+        transition: var(--transition);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .sidebar-social a:hover {
+        background-color: var(--primary-color);
+        color: white;
+        transform: translateY(-3px);
     }
 
     .hero-buttons {

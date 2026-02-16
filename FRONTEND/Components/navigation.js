@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const navToggle = document.getElementById('navToggle');
     const navMenu = document.getElementById('navMenu');
     const navOverlay = document.getElementById('navOverlay');
+    const closeSidebar = document.getElementById('closeSidebar');
 
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', function () {
@@ -10,6 +11,15 @@ document.addEventListener('DOMContentLoaded', function () {
             this.classList.toggle('active');
             if (navOverlay) navOverlay.classList.toggle('active');
         });
+
+        // Close mobile menu when clicking on close button
+        if (closeSidebar) {
+            closeSidebar.addEventListener('click', function () {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                if (navOverlay) navOverlay.classList.remove('active');
+            });
+        }
 
         // Close mobile menu when clicking on overlay
         if (navOverlay) {

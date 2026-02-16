@@ -1,5 +1,8 @@
 // Common Functions
-const API_BASE_URL = 'http://127.0.0.1:8000/api';
+// Use dynamic API URL to support local network testing (e.g. from a phone)
+const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+    ? 'http://127.0.0.1:8000/api'
+    : `http://${window.location.hostname}:8000/api`;
 
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize mobile navigation
@@ -54,6 +57,7 @@ function initMobileNavigation() {
     const navToggle = document.getElementById('navToggle');
     const navMenu = document.getElementById('navMenu');
     const navOverlay = document.getElementById('navOverlay');
+    const closeSidebar = document.getElementById('closeSidebar');
 
     if (navToggle && navMenu) {
         navToggle.addEventListener('click', () => {
@@ -61,6 +65,15 @@ function initMobileNavigation() {
             navToggle.classList.toggle('active');
             if (navOverlay) navOverlay.classList.toggle('active');
         });
+
+        // Close mobile menu when clicking on close button
+        if (closeSidebar) {
+            closeSidebar.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                if (navOverlay) navOverlay.classList.remove('active');
+            });
+        }
 
         // Close mobile menu when clicking on overlay
         if (navOverlay) {
@@ -595,18 +608,23 @@ function initVolunteerForm() {
 
                     // Try to parse and display specific error messages
                     try {
-                        const errorObj = JSON.parse(error.message);
-                        let errorMessage = 'Failed to submit application:\n';
-                        for (const [field, messages] of Object.entries(errorObj)) {
-                            if (Array.isArray(messages)) {
-                                errorMessage += `${field}: ${messages.join(', ')}\n`;
-                            } else {
-                                errorMessage += `${field}: ${messages}\n`;
+                        const errorMsg = error.message;
+                        if (errorMsg.includes('Failed to fetch') || errorMsg.includes('NetworkError')) {
+                            alert('Network error: Cannot reach the backend server. If you are on a mobile device, ensure it can access ' + API_BASE_URL);
+                        } else {
+                            const errorObj = JSON.parse(errorMsg);
+                            let errorMessage = 'Failed to submit application:\n';
+                            for (const [field, messages] of Object.entries(errorObj)) {
+                                if (Array.isArray(messages)) {
+                                    errorMessage += `${field}: ${messages.join(', ')}\n`;
+                                } else {
+                                    errorMessage += `${field}: ${messages}\n`;
+                                }
                             }
+                            alert(errorMessage);
                         }
-                        alert(errorMessage);
                     } catch (e) {
-                        alert('Failed to submit application. Please try again.');
+                        alert('Failed to submit application. Please check your network connection and try again.');
                     }
                 });
         }
