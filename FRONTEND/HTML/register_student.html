@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Student - Charitize</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
+</head>
+
+<body>
+    <!-- Header -->
+    <div id="header-container"></div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1>Student Registration</h1>
+                <p>Register a new student to join our programs and receive support.</p>
+            </div>
+
+            <div class="volunteer-form-container">
+                <form id="studentRegistrationForm" enctype="multipart/form-data">
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="full_name">Full Name</label>
+                            <input type="text" id="full_name" name="full_name" required
+                                placeholder="Full name of the child">
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="profile_photo">Profile Photo</label>
+                            <input type="file" id="profile_photo" name="profile_photo" accept="image/*">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group flex-1">
+                            <label for="date_of_birth">Date of Birth</label>
+                            <input type="date" id="date_of_birth" name="date_of_birth" required>
+                        </div>
+                        <div class="form-group flex-1">
+                            <label for="student_class">Class/Grade</label>
+                            <input type="text" id="student_class" name="student_class" required
+                                placeholder="Current class">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="interests">Interests</label>
+                        <textarea id="interests" name="interests" rows="3"
+                            placeholder="What does the child like doing?"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="talents">Talents</label>
+                        <textarea id="talents" name="talents" rows="3"
+                            placeholder="Special abilities or skills"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="health_status">Health Status</label>
+                        <textarea id="health_status" name="health_status" rows="3"
+                            placeholder="Medical conditions, allergies, etc."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="core_values">Core Values</label>
+                        <textarea id="core_values" name="core_values" rows="3"
+                            placeholder="Key personality traits or values"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Register Student</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer-container"></div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon"
+                style="text-align: center; color: var(--success-color); font-size: 3rem; margin-bottom: 20px;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 style="text-align: center;">Registration Successful!</h3>
+            <p id="confirmationMessage" style="text-align: center;">The student has been successfully registered.</p>
+            <button class="btn btn-primary btn-block close-confirmation"
+                onclick="document.getElementById('confirmationModal').style.display='none'">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // Load header and footer
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('../Components/header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header-container').innerHTML = data;
+                    const navScript = document.createElement('script');
+                    navScript.src = '../Components/navigation.js';
+                    document.body.appendChild(navScript);
+                });
+
+            fetch('../Components/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer-container').innerHTML = data;
+                });
+        });
+
+        // Form Submission
+        document.getElementById('studentRegistrationForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const btn = this.querySelector('button');
+            btn.disabled = true;
+            btn.textContent = 'Registering...';
+
+            fetch('http://127.0.0.1:8000/api/students/', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        document.getElementById('confirmationModal').style.display = 'flex';
+                        this.reset();
+                    } else {
+                        alert('Error registering student. Please check the data and try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.textContent = 'Register Student';
+                });
+        });
+    </script>
+</body>
+
+</html>

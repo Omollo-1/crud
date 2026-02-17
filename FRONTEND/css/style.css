@@ -137,6 +137,15 @@ ul {
     width: 100%;
 }
 
+.flex-1 {
+    flex: 1;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
 /* Header & Navigation */
 .header {
     background-color: white;
@@ -254,6 +263,20 @@ ul {
 
 .hamburger::after {
     bottom: -8px;
+}
+
+.nav-toggle.active .hamburger {
+    background-color: transparent;
+}
+
+.nav-toggle.active .hamburger::before {
+    top: 0;
+    transform: rotate(45deg);
+}
+
+.nav-toggle.active .hamburger::after {
+    bottom: 0;
+    transform: rotate(-45deg);
 }
 
 /* Page Header */

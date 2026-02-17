@@ -48,6 +48,7 @@ def api_root(request):
                 'status': '/api/payments/status/<checkout_id>/',
             },
             'dashboard': '/api/dashboard/stats/',
+            'students': '/api/students/',
         }
     })
 
@@ -71,6 +72,7 @@ urlpatterns = [
     path('api/dashboard/stats/', DashboardStatsView.as_view(), name='dashboard-stats'),
     path('api/payments/callback/', mpesa_callback, name='mpesa-callback'),
     path('api/payments/stk-push/', PaymentViewSet.as_view({'post': 'initiate_stk_push'}), name='stk-push'),
+    path('api/students/', include('students.urls')),
 ]
 
 if settings.DEBUG:
