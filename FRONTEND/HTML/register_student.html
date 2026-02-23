@@ -53,25 +53,25 @@
 
                     <div class="form-group">
                         <label for="interests">Interests</label>
-                        <textarea id="interests" name="interests" rows="3"
+                        <textarea id="interests" name="interests" rows="3" required
                             placeholder="What does the child like doing?"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="talents">Talents</label>
-                        <textarea id="talents" name="talents" rows="3"
+                        <textarea id="talents" name="talents" rows="3" required
                             placeholder="Special abilities or skills"></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="health_status">Health Status</label>
-                        <textarea id="health_status" name="health_status" rows="3"
+                        <textarea id="health_status" name="health_status" rows="3" required
                             placeholder="Medical conditions, allergies, etc."></textarea>
                     </div>
 
                     <div class="form-group">
                         <label for="core_values">Core Values</label>
-                        <textarea id="core_values" name="core_values" rows="3"
+                        <textarea id="core_values" name="core_values" rows="3" required
                             placeholder="Key personality traits or values"></textarea>
                     </div>
 
@@ -123,17 +123,35 @@
 
             const formData = new FormData(this);
             const btn = this.querySelector('button');
+            const API_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+                ? 'http://127.0.0.1:8000/api'
+                : `http://${window.location.hostname}:8000/api`;
+
             btn.disabled = true;
             btn.textContent = 'Registering...';
 
-            fetch('http://127.0.0.1:8000/api/students/', {
+            fetch(`${API_URL}/students/`, {
                 method: 'POST',
                 body: formData
             })
                 .then(response => {
                     if (response.ok) {
-                        document.getElementById('confirmationModal').style.display = 'flex';
+                        const modal = document.getElementById('confirmationModal');
+                        modal.style.display = 'flex';
                         this.reset();
+
+                        // Redirect after 3 seconds
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 3000);
+
+                        // Handle manual close
+                        const closeBtn = modal.querySelector('.btn');
+                        if (closeBtn) {
+                            closeBtn.onclick = function () {
+                                window.location.href = 'index.html';
+                            };
+                        }
                     } else {
                         alert('Error registering student. Please check the data and try again.');
                     }

@@ -1,14 +1,15 @@
-from rest_framework import generics, permissions, status, filters
+from rest_framework import generics, permissions, status, filters, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth import get_user_model
+from .models import Membership
 
 User = get_user_model()
 from .serializers import (
     UserSerializer, RegisterSerializer, LoginSerializer,
-    ChangePasswordSerializer, UpdateProfileSerializer
+    ChangePasswordSerializer, UpdateProfileSerializer, MembershipSerializer
 )
 
 class RegisterView(generics.CreateAPIView):
@@ -105,4 +106,16 @@ class UserDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]
 
-# Create your views here.
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.IsAdminUser]
+
+class MembershipViewSet(viewsets.ModelViewSet):
+    queryset = Membership.objects.all()
+    serializer_class = MembershipSerializer
+    
+    def get_permissions(self):
+        if self.request.method == 'POST':
+            return [permissions.AllowAny()]
+        return [permissions.IsAdminUser()]

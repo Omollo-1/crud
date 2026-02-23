@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             navOverlay.addEventListener('click', function () {
                 navMenu.classList.remove('active');
                 navToggle.classList.remove('active');
-                this.classList.remove('active');
+                navOverlay.classList.remove('active');
             });
         }
 

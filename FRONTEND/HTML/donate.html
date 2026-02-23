@@ -86,11 +86,32 @@
                                     </label>
                                 </div>
                                 <div class="payment-option">
+                                    <input type="radio" id="mpesa" name="paymentMethod" value="mpesa">
+                                    <label for="mpesa">
+                                        <i class="fas fa-mobile-alt"></i> M-Pesa
+                                    </label>
+                                </div>
+                                <div class="payment-option">
+                                    <input type="radio" id="airtelMoney" name="paymentMethod" value="airtel">
+                                    <label for="airtelMoney">
+                                        <i class="fas fa-mobile-alt"></i> Airtel Money
+                                    </label>
+                                </div>
+                                <div class="payment-option">
                                     <input type="radio" id="bankTransfer" name="paymentMethod" value="bank_transfer">
                                     <label for="bankTransfer">
                                         <i class="fas fa-university"></i> Bank Transfer
                                     </label>
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- M-Pesa Details -->
+                        <div id="mpesaDetails" class="payment-details hidden">
+                            <div class="form-group">
+                                <label for="mpesaPhone">Phone Number for STK Push *</label>
+                                <input type="tel" id="mpesaPhone" name="mpesaPhone" placeholder="2547XXXXXXXX">
+                                <p class="help-text">Enter your M-Pesa registered phone number starting with 254.</p>
                             </div>
                         </div>
 

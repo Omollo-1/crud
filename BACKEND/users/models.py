@@ -23,3 +23,20 @@ class CustomUser(AbstractUser):
         ordering = ['-date_joined']
         verbose_name = "User"
         verbose_name_plural = "Users"
+
+class Membership(models.Model):
+    MEMBERSHIP_TYPES = [
+        ('regular', 'Regular'),
+        ('premium', 'Premium'),
+        ('lifetime', 'Lifetime'),
+    ]
+    
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    phone = models.CharField(max_length=20)
+    membership_type = models.CharField(max_length=20, choices=MEMBERSHIP_TYPES, default='regular')
+    reason_for_joining = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.full_name} - {self.membership_type}"

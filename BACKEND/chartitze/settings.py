@@ -84,6 +84,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 MIDDLEWARE = [
      'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -193,6 +194,10 @@ STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
+# Enable WhiteNoise storage for compression and forever-cacheable files
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -269,9 +274,12 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-LOGIN_URL = 'http://127.0.0.1:5500/HTML/login.html'
-LOGIN_REDIRECT_URL = 'http://127.0.0.1:5500/HTML/index.html'
-LOGOUT_REDIRECT_URL = 'http://127.0.0.1:5500/HTML/index.html'
+# Use relative URLs or configurable domain for production
+FRONTEND_URL = config('FRONTEND_URL', default='http://127.0.0.1:5500')
+
+LOGIN_URL = f'{FRONTEND_URL}/HTML/login.html'
+LOGIN_REDIRECT_URL = f'{FRONTEND_URL}/HTML/index.html'
+LOGOUT_REDIRECT_URL = f'{FRONTEND_URL}/HTML/index.html'
 
 # Basic AllAuth Config
 ACCOUNT_LOGIN_METHODS = {'email'}  # Updated from ACCOUNT_AUTHENTICATION_METHOD
@@ -293,3 +301,18 @@ EMAIL_PORT = config('EMAIL_PORT', default=1025, cast=int)
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
 EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+# Production Security Settings
+if not DEBUG:
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    # Only enable these if using HTTPS
+    if config('USE_HTTPS', default='False') == 'True':
+        SECURE_SSL_REDIRECT = True
+        SESSION_COOKIE_SECURE = True
+        CSRF_COOKIE_SECURE = True
+        SECURE_HSTS_SECONDS = 31536000  # 1 year
+        SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+        SECURE_HSTS_PRELOAD = True
+
+    # CSRF Trusted Origins
+    CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='http://localhost,http://127.0.0.1').split(',')

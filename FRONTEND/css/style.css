@@ -186,6 +186,7 @@ ul {
     font-size: 1.5rem;
     font-weight: 700;
     color: var(--primary-color);
+    flex-shrink: 0;
 }
 
 .logo i {
@@ -235,6 +236,7 @@ ul {
     border: none;
     cursor: pointer;
     padding: 10px;
+    z-index: 1002;
 }
 
 .hamburger {
@@ -1850,7 +1852,7 @@ blockquote {
     .nav-menu {
         position: fixed;
         top: 0;
-        left: -280px;
+        left: -100%;
         width: 280px;
         height: 100vh;
         flex-direction: column;
@@ -1858,10 +1860,10 @@ blockquote {
         box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
         padding: 0;
         transition: var(--transition);
-        z-index: 999;
+        z-index: 2000;
         overflow-y: auto;
         align-items: flex-start;
-        display: block;
+        display: flex;
     }
 
     .nav-menu.active {

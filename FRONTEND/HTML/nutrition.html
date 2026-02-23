@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nutrition Programs - Charitize</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
+    <style>
+        .nutrition-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1488459711635-07859396a5c7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            color: white;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .program-feature {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            margin-bottom: 80px;
+            padding: 40px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .program-feature:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .feature-image {
+            flex: 1;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+        }
+
+        .feature-text {
+            flex: 1;
+        }
+
+        .success-card {
+            background: var(--light-gray);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+
+    <section class="nutrition-hero">
+        <div class="container">
+            <h1>Nutrition for Growth</h1>
+            <p>Providing balanced, nutritious meals to foster healthy physical and cognitive development.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="program-feature">
+            <div class="feature-image"
+                style="background-image: url('https://images.unsplash.com/photo-1547592166-23ac45744acd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+            </div>
+            <div class="feature-text">
+                <h2>Balanced Meal Plan</h2>
+                <p>We provide three nutrient-dense meals a day, tailored to the specific dietary needs of growing
+                    children. Our menu is designed by nutritionists to ensure optimal vitamin and mineral intake.</p>
+                <div class="success-card">
+                    "Since joining the program, we've seen a 40% reduction in malnutrition cases among our newest
+                    residents." - Head Nutritionist
+                </div>
+            </div>
+        </div>
+
+        <div class="program-feature">
+            <div class="feature-image"
+                style="background-image: url('https://images.unsplash.com/photo-1592332224321-4268e36e65bf?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+            </div>
+            <div class="feature-text">
+                <h2>Sustainable Farming</h2>
+                <p>We teach children the importance of nutrition through our on-site vegetable gardens. They learn to
+                    grow and harvest their own organic produce, fostering a lifelong connection with healthy food.</p>
+                <a href="volunteer.html" class="btn btn-primary">Join Our Garden Team</a>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('../Components/header.html').then(r => r.text()).then(d => {
+                document.getElementById('header-container').innerHTML = d;
+                const s = document.createElement('script'); s.src = '../Components/navigation.js'; document.body.appendChild(s);
+            });
+            fetch('../Components/footer.html').then(r => r.text()).then(d => {
+                document.getElementById('footer-container').innerHTML = d;
+            });
+        });
+    </script>
+</body>
+
+</html>

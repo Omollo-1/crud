@@ -34,9 +34,9 @@
                 <h4>Programs</h4>
                 <ul class="footer-links">
                     <li><a href="programs.html">Education</a></li>
-                    <li><a href="programs.html">Healthcare</a></li>
-                    <li><a href="programs.html">Nutrition</a></li>
-                    <li><a href="programs.html">Mentorship</a></li>
+                    <li><a href="healthcare.html">Healthcare</a></li>
+                    <li><a href="nutrition.html">Nutrition</a></li>
+                    <li><a href="mentorship.html">Mentorship</a></li>
                 </ul>
             </div>
 
@@ -45,11 +45,54 @@
                 <ul class="footer-links">
                     <li><a href="donate.html">Donate</a></li>
                     <li><a href="volunteer.html">Volunteer</a></li>
-                    <li><a href="donate.html">Sponsor a Child</a></li>
+                    <li><a href="membership.html">Membership</a></li>
                     <li><a href="contact.html">Partner With Us</a></li>
                 </ul>
             </div>
+
+            <div class="footer-section newsletter-box">
+                <h4>Newsletter</h4>
+                <p style="font-size: 0.85rem; margin-bottom: 15px;">Subscribe to stay updated on our impact.</p>
+                <form id="footerNewsletterForm" style="display: flex; gap: 5px;">
+                    <input type="email" id="newsEmail" placeholder="Your Email" required
+                        style="padding: 8px; border-radius: 4px; border: none; flex: 1;">
+                    <button type="submit" class="btn btn-primary" style="padding: 8px 12px;"><i
+                            class="fas fa-paper-plane"></i></button>
+                </form>
+                <div id="newsletterMsg" style="margin-top: 10px; font-size: 0.8rem; display: none;"></div>
+            </div>
         </div>
+
+        <script>
+            // Newsletter logic (wait for component to load fully)
+            setTimeout(() => {
+                const newsForm = document.getElementById('footerNewsletterForm');
+                if (newsForm) {
+                    newsForm.addEventListener('submit', function (e) {
+                        e.preventDefault();
+                        const email = document.getElementById('newsEmail').value;
+                        const msg = document.getElementById('newsletterMsg');
+
+                        fetch('http://127.0.0.1:8000/api/contact/newsletter/subscribe/', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ email: email })
+                        })
+                            .then(r => {
+                                msg.style.display = 'block';
+                                if (r.ok) {
+                                    msg.textContent = 'Successfully subscribed!';
+                                    msg.style.color = 'var(--success-color)';
+                                    newsForm.reset();
+                                } else {
+                                    msg.textContent = 'Subscription failed.';
+                                    msg.style.color = 'var(--danger-color)';
+                                }
+                            });
+                    });
+                }
+            }, 100);
+        </script>
 
         <div class="footer-bottom">
             <p>&copy; 2025 Chartitze. All rights reserved.</p>

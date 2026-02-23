@@ -1,8 +1,8 @@
-// Common Functions
 // Use dynamic API URL to support local network testing (e.g. from a phone)
-const API_BASE_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+const PRODUCTION_API_URL = ''; // Set this if your API is on a different domain
+const API_BASE_URL = PRODUCTION_API_URL || (window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
     ? 'http://127.0.0.1:8000/api'
-    : `http://${window.location.hostname}:8000/api`;
+    : `http://${window.location.hostname}:8000/api`);
 
 document.addEventListener('DOMContentLoaded', function () {
     // Initialize mobile navigation
@@ -388,6 +388,27 @@ function initDonationForm() {
         });
     });
 
+    // Handle payment method visibility
+    const paymentOptions = document.querySelectorAll('input[name="paymentMethod"]');
+    paymentOptions.forEach(option => {
+        option.addEventListener('change', () => {
+            document.querySelectorAll('.payment-details').forEach(detail => {
+                detail.classList.add('hidden');
+            });
+
+            const method = option.value;
+            if (method === 'credit_card') {
+                document.getElementById('creditCardDetails')?.classList.remove('hidden');
+            } else if (method === 'paypal') {
+                document.getElementById('paypalDetails')?.classList.remove('hidden');
+            } else if (method === 'bank_transfer') {
+                document.getElementById('bankTransferDetails')?.classList.remove('hidden');
+            } else if (method === 'mpesa') {
+                document.getElementById('mpesaDetails')?.classList.remove('hidden');
+            }
+        });
+    });
+
     // Handle custom amount
     if (customAmountInput) {
         customAmountInput.addEventListener('input', () => {
@@ -433,7 +454,57 @@ function initDonationForm() {
                 is_anonymous: false
             };
 
+            const paymentMethod = formData.payment_method;
 
+            if (paymentMethod === 'mpesa') {
+                const phone = document.getElementById('mpesaPhone').value;
+                if (!phone.trim()) {
+                    alert('Please enter your M-Pesa phone number for the STK push.');
+                    hideLoading();
+                    return;
+                }
+
+                // First create the donation record
+                fetch(`${API_BASE_URL}/donations/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => response.json())
+                    .then(donationData => {
+                        // Then initiate STK push
+                        return fetch(`${API_BASE_URL}/payments/initiate_stk_push/`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                phone_number: phone,
+                                amount: formData.amount,
+                                donation_id: donationData.id
+                            })
+                        });
+                    })
+                    .then(response => response.json())
+                    .then(stkResponse => {
+                        hideLoading();
+                        if (stkResponse.success) {
+                            document.getElementById('confirmationMessage').textContent =
+                                'STK Push sent to your phone. Please enter your PIN to complete the donation.';
+                            document.getElementById('confirmationModal').style.display = 'flex';
+                        } else {
+                            alert('Failed to initiate M-Pesa payment: ' + stkResponse.message);
+                        }
+                    })
+                    .catch(error => {
+                        hideLoading();
+                        console.error('Error:', error);
+                        alert('An error occurred during payment processing.');
+                    });
+                return;
+            }
             fetch(`${API_BASE_URL}/donations/`, {
                 method: 'POST',
                 headers: {

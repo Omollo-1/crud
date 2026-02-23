@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Membership - Charitize</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
+    <style>
+        .membership-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1511632765486-a01980e01a18?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 120px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .benefit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .benefit-card {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            border-bottom: 4px solid var(--secondary-color);
+        }
+
+        .membership-form-section {
+            background: #fff;
+            padding: 60px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+            margin-bottom: 80px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+
+    <section class="membership-hero">
+        <div class="container">
+            <h1>Join the Charitize Community</h1>
+            <p>Become a member today and help us create a legacy of love and support.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="benefit-grid">
+            <div class="benefit-card">
+                <i class="fas fa-calendar-alt"
+                    style="font-size:3rem; color:var(--primary-color); margin-bottom:20px;"></i>
+                <h3>Priority Events</h3>
+                <p>Get early access and special seating at our fundraising galas and community events.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-newspaper" style="font-size:3rem; color:var(--primary-color); margin-bottom:20px;"></i>
+                <h3>Exclusive Updates</h3>
+                <p>Quarterly insiders-only newsletter with detailed reports on our impact.</p>
+            </div>
+            <div class="benefit-card">
+                <i class="fas fa-certificate"
+                    style="font-size:3rem; color:var(--primary-color); margin-bottom:20px;"></i>
+                <h3>Legacy Recognition</h3>
+                <p>Your name featured on our digital Wall of Honor and in our annual reports.</p>
+            </div>
+        </div>
+
+        <section class="membership-form-section">
+            <h2 style="text-align:center; margin-bottom:40px;">Membership Application</h2>
+            <form id="membershipForm">
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="full_name">Full Name</label>
+                        <input type="text" id="full_name" name="full_name" required>
+                    </div>
+                    <div class="form-group flex-1">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group flex-1">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group flex-1">
+                        <label for="membership_type">Membership Tier</label>
+                        <select id="membership_type" name="membership_type" required>
+                            <option value="regular">Regular</option>
+                            <option value="premium">Premium</option>
+                            <option value="lifetime">Lifetime</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reason_for_joining">Why do you want to join us?</label>
+                    <textarea id="reason_for_joining" name="reason_for_joining" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit Application</button>
+            </form>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <h3 style="text-align:center;">Welcome Aboard!</h3>
+            <p style="text-align:center; margin:20px 0;">Your membership application was successful. We will contact you
+                shortly.</p>
+            <button class="btn btn-primary btn-block" id="closeConfirmation">Fantastic!</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('../Components/header.html').then(r => r.text()).then(d => {
+                document.getElementById('header-container').innerHTML = d;
+                const s = document.createElement('script'); s.src = '../Components/navigation.js'; document.body.appendChild(s);
+            });
+            fetch('../Components/footer.html').then(r => r.text()).then(d => {
+                document.getElementById('footer-container').innerHTML = d;
+            });
+        });
+
+        document.getElementById('membershipForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            const btn = this.querySelector('button');
+            const API_URL = window.location.hostname === '127.0.0.1' || window.location.hostname === 'localhost'
+                ? 'http://127.0.0.1:8000/api'
+                : `http://${window.location.hostname}:8000/api`;
+
+            btn.disabled = true; btn.textContent = 'Processing...';
+
+            fetch(`${API_URL}/users/memberships/`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(r => {
+                    if (r.ok) {
+                        const modal = document.getElementById('confirmationModal');
+                        modal.style.display = 'flex';
+                        this.reset();
+
+                        // Redirect after 3 seconds
+                        const redirectTimeout = setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 3000);
+
+                        // Handle manual close and redirect
+                        document.getElementById('closeConfirmation').onclick = function () {
+                            clearTimeout(redirectTimeout);
+                            window.location.href = 'index.html';
+                        };
+                    } else {
+                        alert('Error submitting application.');
+                    }
+                })
+                .finally(() => {
+                    btn.disabled = false;
+                    btn.textContent = 'Submit Application';
+                });
+        });
+    </script>
+</body>
+
+</html>

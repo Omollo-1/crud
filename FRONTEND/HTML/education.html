@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Education Programs - Charitize</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://img.icons8.com/color/48/000000/heart-charity.png">
+    <style>
+        .service-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0;
+            color: white;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+            border: 1px solid var(--light-gray);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(230, 57, 70, 0.1);
+            border-color: var(--primary-color);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .blog-section {
+            padding: 60px 0;
+            background: var(--light-color);
+            margin-bottom: 80px;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .blog-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+
+        .blog-image {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .blog-content {
+            padding: 25px;
+        }
+
+        .blog-tag {
+            background: var(--primary-color);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header-container"></div>
+
+    <section class="service-hero">
+        <div class="container">
+            <h1>Education Programs</h1>
+            <p>Empowering children through quality education, vocational training, and life-long learning opportunities.
+            </p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="service-grid">
+            <div class="service-card">
+                <i class="fas fa-school service-icon"></i>
+                <h3>Primary & Secondary</h3>
+                <p>Full scholarships and support for formal schooling at top-rated local institutions.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-laptop-code service-icon"></i>
+                <h3>Digital Literacy</h3>
+                <p>Equipping children with essential computer skills and coding basics for the modern world.</p>
+            </div>
+            <div class="service-card">
+                <i class="fas fa-tools service-icon"></i>
+                <h3>Vocational Training</h3>
+                <p>Practical skills training in carpentry, tailoring, and more for older youth.</p>
+            </div>
+        </div>
+
+        <section class="blog-section">
+            <div class="container">
+                <h2 style="text-align:center; margin-bottom:40px;">Education Highlights</h2>
+                <div class="blog-grid">
+                    <article class="blog-card">
+                        <div class="blog-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')">
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-tag">Success Story</span>
+                            <h4>College Bound: John's Journey</h4>
+                            <p>One of our senior students has just received a full scholarship to join the University of
+                                Nairobi.</p>
+                            <a href="#" class="btn btn-small btn-secondary">Read More</a>
+                        </div>
+                    </article>
+                    <article class="blog-card">
+                        <div class="blog-image"
+                            style="background-image: url('https://images.unsplash.com/photo-1509062522246-3755977927d7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80')">
+                        </div>
+                        <div class="blog-content">
+                            <span class="blog-tag">Innovation</span>
+                            <h4>New Computer Lab Opening</h4>
+                            <p>We've successfully set up a modern computer lab to enhance digital learning for all our
+                                children.</p>
+                            <a href="#" class="btn btn-small btn-secondary">Read More</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('../Components/header.html').then(r => r.text()).then(d => {
+                document.getElementById('header-container').innerHTML = d;
+                const s = document.createElement('script'); s.src = '../Components/navigation.js'; document.body.appendChild(s);
+            });
+            fetch('../Components/footer.html').then(r => r.text()).then(d => {
+                document.getElementById('footer-container').innerHTML = d;
+            });
+        });
+    </script>
+</body>
+
+</html>
