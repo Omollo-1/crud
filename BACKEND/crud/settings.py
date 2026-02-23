@@ -120,14 +120,14 @@ REST_FRAMEWORK = {
 
 
 # URLs
-ROOT_URLCONF = 'chartitze.urls'
+ROOT_URLCONF = 'crud.urls'
 
-WSGI_APPLICATION = 'chartitze.wsgi.application'
+WSGI_APPLICATION = 'crud.wsgi.application'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'chartitze' / 'templates'],
+        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'crud' / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
